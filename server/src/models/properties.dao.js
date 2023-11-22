@@ -1,5 +1,4 @@
-import {db} from '../models/index.js';
-import {listItemsFromYad2} from "../facades/properties.facade.js";
+import {db} from './index.js';
 
 const Property = db.properties;
 
@@ -18,19 +17,15 @@ export const listProperties = (req, res) => {
         });
 };
 
-export const syncProperties = async (req, res) => {
-    const properties = await listItemsFromYad2();
-    Property.bulkCreate(properties, {returning: true})
+export const bulkCreateProperties = async (properties) => {
+    await Property.bulkCreate(properties, { returning: true })
         .then(data => {
-            res.send({
+            return {
                 properties: data
-            });
+            };
         })
         .catch(err => {
-            res.status(500).send({
-                message:
-                err.message
-            });
+            throw new Error(JSON.stringify(err.message));
         });
 };
 
@@ -82,15 +77,10 @@ export const updateProperty = (req, res) => {
     const fields = req.body.fields;
     const data = req.body.data;
 
-    console.log('id ' + id)
-    console.log('fields ' + fields)
-    console.log('data ' + JSON.stringify(data))
-
     const dataToUpdate = fields.reduce((acc, field) => {
         const fieldValue = data[field];
         return {...acc, [field]: fieldValue};
     }, {});
-    console.log('dataTiIpdate ' + JSON.stringify(dataToUpdate))
 
     Property.update(dataToUpdate, {
         where: { propertyId: id },

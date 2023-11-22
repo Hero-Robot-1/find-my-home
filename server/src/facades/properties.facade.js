@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const yad2ItemToProperty = (yad2Item) => {
     return {
@@ -25,17 +25,24 @@ export const yad2ItemToProperty = (yad2Item) => {
     }
 }
 
-export const listItemsFromYad2 = async () => {
-    return axios.get('https://gw.yad2.co.il/feed-search-legacy/realestate/rent?topArea=2&area=1&' +
-        'city=5000&rooms=3--1&price=5000-9500&parking=1&elevator=1&forceLdLoad=true', {
+export const getYad2Page = async (pageNumber) => {
+    const url = `https://gw.yad2.co.il/feed-search-legacy/realestate/rent?topArea=2&area=1&' +
+        'city=5000&rooms=3--1&price=6000-9500&parking=1&elevator=1&forceLdLoad=true&page=${pageNumber}`;
+    return axios.get(url, {
         headers: {"Content-Type": "application/json; charset=utf-8"}
     })
         .then(response => {
-            return response.data?.data?.feed?.feed_items
+            const properties = response.data?.data?.feed?.feed_items
                 .map(yad2ItemToProperty)
                 .filter((item) => !!item.propertyId);
+            const pagination = response.data?.data?.pagination;
+            return {
+                properties,
+                pagination
+            };
         })
         .catch(err => {
             console.log('Error: ', err.message);
         });
 };
+

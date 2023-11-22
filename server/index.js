@@ -1,9 +1,9 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors  from 'cors';
-import { routes } from './routes/properties.routes.js';
-import { authRoutes } from './routes/authentication.routes.js';
-import { db } from './models/index.js'
+import { routes } from './src/routes/properties.routes.js';
+import { authRoutes } from './src/routes/authentication.routes.js';
+import { db } from './src/models/index.js'
 
 const app = express();
 

@@ -9,13 +9,11 @@ routes.get('/', (req, res) => {
 });
 
 routes.post("/properties", properties.createProperty);
-//
-// routes.delete("/transactions/:id", transactions.deleteTransaction);
-//
-// routes.put("/transactions/:id", transactions.updateTransaction);
 
 routes.get("/properties", properties.listProperties);
 
 routes.post("/properties/sync/yad2", properties.syncProperties);
+
+routes.patch("/properties/:id", properties.updateProperty);
 
 

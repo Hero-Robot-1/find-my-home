@@ -72,7 +72,7 @@ const Sidebar = ({ user }) => {
                   ml="15px"
                 >
                   <Typography variant="h3" color={colors.grey[100]}>
-                    CartWheel Club
+                    Find My Home
                   </Typography>
                   <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                     <MenuOutlinedIcon />

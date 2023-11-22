@@ -4,7 +4,7 @@ import Sidebar from "./scenes/global/Sidebar";
 import {CssBaseline, ThemeProvider} from "@mui/material";
 import {ColorModeContext, useMode} from "./theme";
 import {Home, Login, SignUp} from "./scenes/authentication";
-import AlignItemsList from "./scenes/properties";
+import PropertiesGrid from "./scenes/properties";
 import Topbar from "./scenes/global/Topbar";
 function App() {
   const [theme, colorMode] = useMode();
@@ -31,7 +31,7 @@ function App() {
               <Route path="/home" element={<Home />}/>
               <Route path="/signup" element={user?.email ? <Home user={user}/> : <SignUp />}/>
               <Route path="/login" element={user?.email ? <Home user={user}/> : <Login />}/>
-              <Route path="/properties" element={<AlignItemsList />} />
+              <Route path="/properties" element={<PropertiesGrid />} />
             </Routes>
           </main>
         </div>

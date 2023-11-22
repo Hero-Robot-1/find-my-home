@@ -1,4 +1,4 @@
-import {ARRAY, DATE, Sequelize, TEXT, JSON} from 'sequelize';
+import {ARRAY, DATE, Sequelize, TEXT, JSON, BOOLEAN} from 'sequelize';
 import { STRING } from 'sequelize/lib/data-types';
 import dotenv from 'dotenv';
 
@@ -6,8 +6,9 @@ dotenv.config();
 
 const Property = (sequelize) => {
   return sequelize.define("property", {
-    recordId: {
-      type: STRING
+    propertyId: {
+      type: STRING,
+      primaryKey: true
     },
     dateAdded: {
       type: DATE
@@ -47,6 +48,15 @@ const Property = (sequelize) => {
     },
     link: {
       type: STRING
+    },
+    merchant: {
+      type: BOOLEAN
+    },
+    archived: {
+      type: BOOLEAN
+    },
+    liked: {
+      type: BOOLEAN
     }
   })
 };

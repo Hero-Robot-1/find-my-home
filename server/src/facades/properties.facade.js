@@ -3,7 +3,7 @@ import axios from 'axios';
 export const yad2ItemToProperty = (yad2Item) => {
     return {
         propertyId: yad2Item.id,
-        propertyDateUpdated: yad2Item.date,
+        propertyDateAdded: yad2Item.date_added,
         title: yad2Item.title_1,
         addressLine: yad2Item.row_1,
         description: yad2Item.search_text,
@@ -25,9 +25,16 @@ export const yad2ItemToProperty = (yad2Item) => {
     }
 }
 
-export const getYad2Page = async (pageNumber) => {
-    const url = `https://gw.yad2.co.il/feed-search-legacy/realestate/rent?topArea=2&area=1&' +
+export const getYad2Page = async (pageNumber = 1,
+                                  startDate= null,
+                                  endDate= Date.now()) => {
+    let url = `https://gw.yad2.co.il/feed-search-legacy/realestate/rent?topArea=2&area=1&' +
         'city=5000&rooms=3--1&price=6000-9500&parking=1&elevator=1&forceLdLoad=true&page=${pageNumber}`;
+
+    if (!!startDate) {
+        url += `&startDate=${startDate}-${endDate}`
+    }
+
     return axios.get(url, {
         headers: {"Content-Type": "application/json; charset=utf-8"}
     })
@@ -36,6 +43,7 @@ export const getYad2Page = async (pageNumber) => {
                 .map(yad2ItemToProperty)
                 .filter((item) => !!item.propertyId);
             const pagination = response.data?.data?.pagination;
+
             return {
                 properties,
                 pagination

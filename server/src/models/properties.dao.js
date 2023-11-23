@@ -3,7 +3,6 @@ import { db } from './index.js';
 const Property = db.properties;
 
 export const listProperties = async (query) => {
-
     return Property.findAll(query)
         .then(data => {
             return {
@@ -16,7 +15,7 @@ export const listProperties = async (query) => {
 };
 
 export const bulkCreateProperties = async (properties) => {
-    return Property.bulkCreate(properties, { returning: true })
+    return Property.bulkCreate(properties, { returning: true, ignoreDuplicates: true })
         .then(data => {
             return {
                 properties: data
@@ -30,7 +29,7 @@ export const bulkCreateProperties = async (properties) => {
 export const createProperty = (req, res) => {
     const propertyParams = {
         "propertyId": "wlj1c2jr",
-        "propertyDateUpdated": "2023-11-08 13:33:31",
+        "propertyDateAdded": "2023-11-08 13:33:31",
         "title": "יהודה בורלא",
         "addressLine": "יהודה בורלא",
         "description": "מרפסת מצב הנכס ב למד\nבני=",
@@ -100,27 +99,15 @@ export const updateProperty = (req, res) => {
             });
         });
 };
-//
-// export const deleteTransaction = (req, res) => {
-//   const id = req.params.id;
-//
-//   Transaction.destroy({
-//     where: { id: id }
-//   })
-//     .then(num => {
-//       if (num == 1) {
-//         res.send({
-//           message: "Transaction was deleted successfully!"
-//         });
-//       } else {
-//         res.send({
-//           message: `Cannot delete Transaction with id=${id}`
-//         });
-//       }
-//     })
-//     .catch(err => {
-//       res.status(500).send({
-//         message: "Could not delete Transaction with id=" + id
-//       });
-//     });
-// };
+
+export const getLatestPropertyUpdatedDate = async () => {
+    return Property.max('propertyDateAdded',{})
+        .then(value => {
+            return {
+                lastDateUpdated: value
+            };
+        })
+        .catch(err => {
+            throw new Error(JSON.stringify(err.message));
+        });
+};

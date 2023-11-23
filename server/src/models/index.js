@@ -8,8 +8,9 @@ const Property = (sequelize) => {
   return sequelize.define("property", {
     propertyId: {
       type: STRING,
+      primaryKey: true
     },
-    propertyDateUpdated: {
+    propertyDateAdded: {
       type: DATE
     },
     title: {

@@ -8,19 +8,19 @@ import PropertyCard from "./PropertiesCard";
 const PropertiesGrid = () => {
     const [APIData, setAPIData] = useState([]);
     useEffect(() => {
-        axios.get(`${serverUrl()}/properties`)
+        axios.get(`${ serverUrl() }/properties`)
             .then((response) => {
                 setAPIData(response.data.properties);
             })
     }, [])
 
     return (
-        <Grid container disableEqualOverflow={"true"} padding={5} spacing={10} columns={9}>
+        <Grid container disableEqualOverflow={ "true" } padding={ 5 } spacing={ 10 } columns={ 9 }>
             { APIData.map(item => (
-                <Grid key={item.id} {...{ md: 3 }} minHeight={100} >
-                    <PropertyCard item={item}/>
+                <Grid key={ item.id } { ...{ md: 3 } } minHeight={ 100 }>
+                    <PropertyCard item={ item }/>
                 </Grid>
-            ))}
+            )) }
         </Grid>
     );
 }

@@ -29,26 +29,26 @@ const SignUp = () => {
 
     return (
         <>
-            <nav style={{ padding: "2rem" }}>
+            <nav style={ { padding: "2rem" } }>
                 <Link to="/">Go Back</Link>
             </nav>
-            <header style={{ textAlign: "center" }}>
+            <header style={ { textAlign: "center" } }>
                 <h1>Register to continue</h1>
             </header>
             <main
-                style={{
+                style={ {
                     display: "flex",
                     justifyContent: "center",
                     flexDirection: "column",
                     alignItems: "center",
-                }}
+                } }
             >
-                {error && <p style={{ color: "red" }}>{error}</p>}
-                {loading ? (
+                { error && <p style={ { color: "red" } }>{ error }</p> }
+                { loading ? (
                     <div>Loading....</div>
                 ) : (
                     <div id="signUpDiv" data-text="signup_with"></div>
-                )}
+                ) }
             </main>
             <footer></footer>
         </>

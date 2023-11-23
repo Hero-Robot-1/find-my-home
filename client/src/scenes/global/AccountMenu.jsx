@@ -27,20 +27,20 @@ export default function AccountMenu({ user }) {
     return (
         <React.Fragment>
             <IconButton
-                onClick={handleClick}
-                aria-controls={open ? 'account-menu' : undefined}
+                onClick={ handleClick }
+                aria-controls={ open ? 'account-menu' : undefined }
                 aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
+                aria-expanded={ open ? 'true' : undefined }
             >
-                { user?.email ? (<HeaderProfileView user={user}/>): (<PersonOutlinedIcon />)}
+                { user?.email ? (<HeaderProfileView user={ user }/>) : (<PersonOutlinedIcon/>) }
             </IconButton>
             <Menu
-                anchorEl={anchorEl}
+                anchorEl={ anchorEl }
                 id="account-menu"
-                open={open}
-                onClose={handleClose}
-                onClick={handleClose}
-                PaperProps={{
+                open={ open }
+                onClose={ handleClose }
+                onClick={ handleClose }
+                PaperProps={ {
                     elevation: 0,
                     sx: {
                         overflow: 'visible',
@@ -65,17 +65,17 @@ export default function AccountMenu({ user }) {
                             zIndex: 0,
                         },
                     },
-                }}
-                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                } }
+                transformOrigin={ { horizontal: 'right', vertical: 'top' } }
+                anchorOrigin={ { horizontal: 'right', vertical: 'bottom' } }
             >
-                <MenuItem onClick={handleClose}>
-                    <Avatar /> Profile
+                <MenuItem onClick={ handleClose }>
+                    <Avatar/> Profile
                 </MenuItem>
-                <Divider />
-                <MenuItem onClick={logout}>
+                <Divider/>
+                <MenuItem onClick={ logout }>
                     <ListItemIcon>
-                        <Logout fontSize="small" />
+                        <Logout fontSize="small"/>
                     </ListItemIcon>
                     Logout
                 </MenuItem>

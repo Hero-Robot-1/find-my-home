@@ -35,7 +35,7 @@ export const createProperty = (req, res) => {
         "description": "מרפסת מצב הנכס ב למד\nבני=",
         "price": "7,650 ₪",
         "street": "יהודה בורלא",
-        "coordinates": {"latitude": 32.1083461833333, "longitude": 34.7907483333333},
+        "coordinates": { "latitude": 32.1083461833333, "longitude": 34.7907483333333 },
         "rooms": "3 חדרים",
         "meters": "80 מ״ר",
         "floorNumber": "קומה 6",
@@ -76,7 +76,7 @@ export const updateProperty = (req, res) => {
 
     const dataToUpdate = fields.reduce((acc, field) => {
         const fieldValue = data[field];
-        return {...acc, [field]: fieldValue};
+        return { ...acc, [field]: fieldValue };
     }, {});
 
     Property.update(dataToUpdate, {
@@ -89,7 +89,7 @@ export const updateProperty = (req, res) => {
                 });
             } else {
                 res.send({
-                    message: `Cannot update Property with id=${id}`
+                    message: `Cannot update Property with id=${ id }`
                 });
             }
         })
@@ -101,7 +101,7 @@ export const updateProperty = (req, res) => {
 };
 
 export const getLatestPropertyUpdatedDate = async () => {
-    return Property.max('propertyDateAdded',{})
+    return Property.max('propertyDateAdded', {})
         .then(value => {
             return {
                 lastDateUpdated: value

@@ -1,7 +1,7 @@
 import cron from 'node-cron';
 import { getLatestPropertyUpdatedDate } from "../models/properties.dao.js";
-import {producePagesToQueue} from "../queues/properies.queues.js";
-import {getYad2Page} from "../facades/properties.facade.js";
+import { producePagesToQueue } from "../queues/properies.queues.js";
+import { getYad2Page } from "../facades/properties.facade.js";
 import * as dao from "../models/properties.dao.js";
 
 export const initScheduledJobs = () => {

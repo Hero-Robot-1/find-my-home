@@ -5,7 +5,10 @@ import {producePagesToQueue} from "../queues/properies.queues.js";
 
 const Property = db.properties;
 
-export const listProperties = () => dao.listProperties();
+export const listProperties = async (req, res) => {
+    const properties = await dao.listProperties();
+    res.send(properties);
+}
 
 export const createProperty = () => dao.createProperty();
 

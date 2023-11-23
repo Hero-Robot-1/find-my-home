@@ -1,24 +1,21 @@
-import {db} from './index.js';
+import { db } from './index.js';
 
 const Property = db.properties;
 
-export const listProperties = (req, res) => {
-    Property.findAll({ where: { archived: false }})
+export const listProperties = async () => {
+    return Property.findAll({ where: { archived: false }})
         .then(data => {
-            res.send({
+            return {
                 properties: data
-            });
+            };
         })
         .catch(err => {
-            res.status(500).send({
-                message:
-                err.message
-            });
+            throw new Error(JSON.stringify(err.message));
         });
 };
 
 export const bulkCreateProperties = async (properties) => {
-    await Property.bulkCreate(properties, { returning: true })
+    return Property.bulkCreate(properties, { returning: true })
         .then(data => {
             return {
                 properties: data

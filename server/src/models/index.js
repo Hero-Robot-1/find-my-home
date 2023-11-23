@@ -9,7 +9,7 @@ const Property = (sequelize) => {
     propertyId: {
       type: STRING,
     },
-    dateAdded: {
+    propertyDateUpdated: {
       type: DATE
     },
     title: {

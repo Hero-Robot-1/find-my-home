@@ -2,8 +2,9 @@ import { db } from './index.js';
 
 const Property = db.properties;
 
-export const listProperties = async () => {
-    return Property.findAll({ where: { archived: false }})
+export const listProperties = async (query) => {
+
+    return Property.findAll(query)
         .then(data => {
             return {
                 properties: data
@@ -29,7 +30,7 @@ export const bulkCreateProperties = async (properties) => {
 export const createProperty = (req, res) => {
     const propertyParams = {
         "propertyId": "wlj1c2jr",
-        "dateAdded": "2023-11-08 13:33:31",
+        "propertyDateUpdated": "2023-11-08 13:33:31",
         "title": "יהודה בורלא",
         "addressLine": "יהודה בורלא",
         "description": "מרפסת מצב הנכס ב למד\nבני=",

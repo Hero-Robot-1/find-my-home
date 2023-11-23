@@ -6,7 +6,8 @@ import {producePagesToQueue} from "../queues/properies.queues.js";
 const Property = db.properties;
 
 export const listProperties = async (req, res) => {
-    const properties = await dao.listProperties();
+    const query = { where: { archived: false }, order: [['propertyDateUpdated', 'DESC']]}
+    const properties = await dao.listProperties(query);
     res.send(properties);
 }
 

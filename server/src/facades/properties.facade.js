@@ -3,7 +3,7 @@ import axios from 'axios';
 export const yad2ItemToProperty = (yad2Item) => {
     return {
         propertyId: yad2Item.id,
-        dateAdded: yad2Item.date_added,
+        propertyDateUpdated: yad2Item.date,
         title: yad2Item.title_1,
         addressLine: yad2Item.row_1,
         description: yad2Item.search_text,

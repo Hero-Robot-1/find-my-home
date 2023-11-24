@@ -18,7 +18,8 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
         <MenuItem
             active={ selected === title }
             style={ {
-                color: colors.grey[100],
+                color: colors.grey[100]
+                ,
             } }
             onClick={ () => setSelected(title) }
             icon={ icon }
@@ -55,9 +56,8 @@ const Sidebar = ({ user }) => {
                 },
             } }
         >
-            <ProSidebar collapsed={ isCollapsed }>
+            <ProSidebar collapsed={ isCollapsed } width={240} style={{maxWidth:250}}>
                 <Menu iconShape="square">
-                    {/* LOGO AND MENU ICON */ }
                     <MenuItem
                         onClick={ () => setIsCollapsed(!isCollapsed) }
                         icon={ isCollapsed ? <MenuOutlinedIcon/> : undefined }
@@ -71,7 +71,7 @@ const Sidebar = ({ user }) => {
                                 display="flex"
                                 justifyContent="space-between"
                                 alignItems="center"
-                                ml="15px"
+                                ml="2px"
                             >
                                 <Typography variant="h3" color={ colors.grey[100] }>
                                     Find My Home
@@ -83,14 +83,7 @@ const Sidebar = ({ user }) => {
                         ) }
                     </MenuItem>
 
-                    <Box paddingLeft={ isCollapsed ? undefined : "10%" }>
-                        <Typography
-                            variant="h6"
-                            color={ colors.grey[300] }
-                            sx={ { m: "15px 0 5px 20px" } }
-                        >
-                            Data
-                        </Typography>
+                    <Box paddingLeft={ isCollapsed ? undefined : "1%" }>
                         <Item
                             title="Dashboard"
                             to="/"

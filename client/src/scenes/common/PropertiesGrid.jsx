@@ -4,9 +4,11 @@ import PropertyCard from "./PropertiesCard";
 
 const PropertiesGrid = ({ mode, data }) => {
     return (
-        <Grid container disableEqualOverflow={ "true" } padding={ 5 } spacing={ 10 } columns={ 9 }>
+        <Grid container   alignContent="center"
+              alignItems="center"
+              wrap="wrap" disableEqualOverflow={ "true" } padding={ 6 } spacing={ 7 } columns={ 9 }>
             { data.map(item => (
-                <Grid key={ item.id } { ...{ md: 3 } } minHeight={ 100 }>
+                <Grid key={ item.id } { ...{ sm: 6, md: 3 } } minHeight={ 100 }>
                     <PropertyCard item={ item }/>
                 </Grid>
             )) }

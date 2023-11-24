@@ -1,0 +1,58 @@
+.merchant-card {
+  position: relative;
+  height: 345px;
+  width: 345px;
+  background-color: lightyellow !important;
+}
+
+.non-merchant-card {
+  position: relative;
+  height: 345px;
+  width: 345px;
+  background-color: lightblue !important;
+}
+
+.card-header {
+  text-align: right;
+}
+
+.MuiCardHeader-action {
+  float: left;
+  position: absolute;
+  transform: scale(1.4);
+}
+
+.card-action-area {
+  padding: 5px !important;
+  bottom: 0;
+  position: absolute !important;
+}
+
+
+.card-stack {
+  padding: 8px !important;
+  bottom: 3px;
+  position: absolute !important;
+  float: right;
+  right: 10px;
+}
+
+//.MuiCardHeader-content {
+//  overflow: hidden !important;
+//  white-space: nowrap;
+//  text-overflow: ellipsis; /* will make [...] at the end */
+//}
+//
+//.MuiCardHeader-root {
+//  overflow: hidden !important;
+//  display: block !important;
+//
+//}
+
+//.MuiCardHeader-title {
+//  overflow: hidden;
+//  text-overflow: ellipsis !important; /* will make [...] at the end */
+//  white-space: nowrap; /* paragraph to one line */
+//  direction: rtl;
+//  float: right;
+//}

@@ -14,6 +14,10 @@ import FindInPageIcon from '@mui/icons-material/FindInPage';
 import axios from "axios";
 import { serverUrl } from "../../index";
 import ClearIcon from '@mui/icons-material/Clear';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import ImageCarousel from "./Carousel";
+import { CardActionArea } from "@mui/material";
+import "./Card.scss";
 
 const Item = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(1),
@@ -54,32 +58,26 @@ const PropertyCard = ({ mode, item }) => {
     }
 
     return (
-        <Card sx={ { maxWidth: 345, maxHeight: 400 } }
-              style={ { backgroundColor: merchant ? 'lightyellow' : 'lightblue' } }>
-            <CardHeader
-                action={
-                    <IconButton aria-label="settings" onClick={ () => {
-                        window.open(item.link, "_blank")
-                    } }>
-                        <FindInPageIcon xlinkHref={ item.link }/>
-                    </IconButton>
-                }
-                title={ item.title }
-                subheader={ item.price }
-                style={ { textAlign: "right" } }
+        <Card className={ merchant ? 'merchant-card' : 'non-merchant-card'}>
+
+            <CardHeader className="card-header"
+                        title={ item.title }
+                        subheader={ item.price }
+                        action={
+                            <IconButton className="card-header-action" onClick={ () => {
+                                window.open(item.link, "_blank")
+                            } }>
+                                <FindInPageIcon xlinkHref={ item.link }/>
+                            </IconButton>
+                        }
             />
-            <CardMedia
-                component="img"
-                sx={ { maxWidth: 345, maxHeight: 150 } }
-                image={ item.primaryImage }
-                alt={ item.title }
-                onClick={}
-            />
-            <CardContent
-                sx={ { maxWidth: 345, maxHeight: 60 } }
-            >
+            <CardMedia>
+                <ImageCarousel images={ item.images }/>
+            </CardMedia>
+
+            <CardContent className="card-stack">
                 <Stack
-                    direction="row-reverse" spacing={ 3 }>
+                    direction="row-reverse" spacing={ 2 } >
                     <Item>
                         { item.rooms }
                     </Item>
@@ -91,24 +89,28 @@ const PropertyCard = ({ mode, item }) => {
                     </Item>
                 </Stack>
             </CardContent>
-            <CardActions disableSpacing>
-                { archived === false ?
-                    (<React.Fragment>
-                        <IconButton aria-label="add to favorites">
-                            <FavoriteIcon style={ { color: liked ? 'red' : 'black' } } onClick={ () => {
-                                updateLiked(!liked)
-                            } }/>
-                        </IconButton>
-                        <IconButton aria-label="archive">
-                            <ClearIcon style={ { color: archived ? 'black' : 'green' } } onClick={ updateArchived }/>
-                        </IconButton>
-                    </React.Fragment>) :
-                    (<IconButton aria-label="unarchive">
-                        <ClearIcon onClick={ updateUnArchive }/>
-                    </IconButton>)
-                }
 
-            </CardActions>
+            <CardActionArea className="card-action-area" disableRipple={true} high>
+                <CardActions disableSpacing>
+                    { archived === false ?
+                        (<React.Fragment>
+                            <IconButton aria-label="add to favorites">
+                                <FavoriteIcon style={ { color: liked ? 'red' : 'black' } } onClick={ () => {
+                                    updateLiked(!liked)
+                                } }/>
+                            </IconButton>
+                            <IconButton aria-label="archive">
+                                <ClearIcon style={ { color: archived ? 'black' : 'green' } }
+                                           onClick={ updateArchived }/>
+                            </IconButton>
+                        </React.Fragment>) :
+                        (<IconButton aria-label="unarchive">
+                            <ClearIcon onClick={ updateUnArchive }/>
+                        </IconButton>)
+                    }
+
+                </CardActions>
+            </CardActionArea>
         </Card>
     );
 }

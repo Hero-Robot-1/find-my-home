@@ -5,7 +5,7 @@ import { serverUrl } from "../../index";
 import Grid from "@mui/material/Unstable_Grid2";
 import PropertyCard from "./PropertiesCard";
 
-const PropertiesGrid = () => {
+const PropertiesGrid = (mode) => {
     const [APIData, setAPIData] = useState([]);
     useEffect(() => {
         axios.get(`${ serverUrl() }/properties`)

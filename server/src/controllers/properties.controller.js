@@ -8,6 +8,13 @@ export const listProperties = async (req, res) => {
     res.send(properties);
 }
 
+export const queryProperties = async (req, res) => {
+    const query = req.body.query;
+    console.log("@@@@@@@ query" + JSON.stringify(query))
+    const properties = await dao.listProperties(query);
+    res.send(properties);
+}
+
 export const createProperty = () => dao.createProperty();
 
 export const updateProperty = async (req, res) => {

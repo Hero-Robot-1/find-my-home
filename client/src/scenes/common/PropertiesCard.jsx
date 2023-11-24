@@ -10,15 +10,15 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles'
-import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import FindInPageIcon from '@mui/icons-material/FindInPage';
 import axios from "axios";
 import { serverUrl } from "../../index";
+import ClearIcon from '@mui/icons-material/Clear';
 
 const Item = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(1),
 }));
-const PropertyCard = ({ item }) => {
+const PropertyCard = ({ mode, item }) => {
     const [id, setId] = useState(item.propertyId);
     const [liked, setLiked] = useState(item.liked);
     const [archived, setArchived] = useState(item.archived);
@@ -39,6 +39,16 @@ const PropertyCard = ({ item }) => {
             fields: ['liked'],
             data: {
                 liked: status
+            }
+        });
+    }
+
+    const updateUnArchive = (status) => {
+        setArchived(false)
+        axios.patch(`${ serverUrl() }/properties/${ id }`, {
+            fields: ['archived'],
+            data: {
+                archived: false
             }
         });
     }
@@ -81,17 +91,28 @@ const PropertyCard = ({ item }) => {
                 </Stack>
             </CardContent>
             <CardActions disableSpacing>
-                <IconButton aria-label="add to favorites">
-                    <FavoriteIcon style={ { color: liked ? 'red' : 'black' } } onClick={ () => {
-                        updateLiked(!liked)
-                    } }/>
-                </IconButton>
+
                 {/*<IconButton aria-label="share">*/ }
                 {/*    <ShareIcon />*/ }
                 {/*</IconButton>*/ }
-                <IconButton aria-label="clean">
-                    <CleaningServicesIcon style={ { color: archived ? 'black' : 'green' } } onClick={ updateArchived }/>
-                </IconButton>
+
+
+                { archived === false ?
+                    (<React.Fragment>
+                        <IconButton aria-label="add to favorites">
+                            <FavoriteIcon style={ { color: liked ? 'red' : 'black' } } onClick={ () => {
+                                updateLiked(!liked)
+                            } }/>
+                        </IconButton>
+                        <IconButton aria-label="archive">
+                            <ClearIcon style={ { color: archived ? 'black' : 'green' } } onClick={ updateArchived }/>
+                        </IconButton>
+                    </React.Fragment>) :
+                    (<IconButton aria-label="unarchive">
+                        <ClearIcon onClick={ updateUnArchive }/>
+                    </IconButton>)
+                }
+
             </CardActions>
         </Card>
     );

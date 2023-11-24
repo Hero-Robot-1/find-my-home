@@ -26,6 +26,38 @@ export const bulkCreateProperties = async (properties) => {
         });
 };
 
+export const updateProperty = async (id, dataToUpdate) => {
+    return Property.update(dataToUpdate, {
+        where: { propertyId: id },
+    })
+        .then(num => {
+            if (num == 1) {
+                return {
+                    message: "Property was updated successfully."
+                };
+            } else {
+                return {
+                    message: `Cannot update Property with id=${ id }`
+                };
+            }
+        })
+        .catch(err => {
+            throw new Error(JSON.stringify(err.message));
+        });
+};
+
+export const getLatestPropertyUpdatedDate = async () => {
+    return Property.max('propertyDateAdded', {})
+        .then(value => {
+            return {
+                lastDateUpdated: value
+            };
+        })
+        .catch(err => {
+            throw new Error(JSON.stringify(err.message));
+        });
+};
+
 export const createProperty = (req, res) => {
     const propertyParams = {
         "propertyId": "wlj1c2jr",
@@ -69,45 +101,4 @@ export const createProperty = (req, res) => {
 
 };
 
-export const updateProperty = (req, res) => {
-    const id = req.params.id;
-    const fields = req.body.fields;
-    const data = req.body.data;
 
-    const dataToUpdate = fields.reduce((acc, field) => {
-        const fieldValue = data[field];
-        return { ...acc, [field]: fieldValue };
-    }, {});
-
-    Property.update(dataToUpdate, {
-        where: { propertyId: id },
-    })
-        .then(num => {
-            if (num == 1) {
-                res.send({
-                    message: "Property was updated successfully."
-                });
-            } else {
-                res.send({
-                    message: `Cannot update Property with id=${ id }`
-                });
-            }
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: "Error updating Property with id=" + id
-            });
-        });
-};
-
-export const getLatestPropertyUpdatedDate = async () => {
-    return Property.max('propertyDateAdded', {})
-        .then(value => {
-            return {
-                lastDateUpdated: value
-            };
-        })
-        .catch(err => {
-            throw new Error(JSON.stringify(err.message));
-        });
-};

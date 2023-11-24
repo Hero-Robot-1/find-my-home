@@ -4,8 +4,10 @@ import Sidebar from "./scenes/global/Sidebar";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import { Home, Login, SignUp } from "./scenes/authentication";
-import PropertiesGrid from "./scenes/properties";
 import Topbar from "./scenes/global/Topbar";
+import NewProperties from "./scenes/new-properties/NewProperties";
+import TrashProperties from "./scenes/trash/Trash";
+import LikedProperties from "./scenes/liked/LikedProperties";
 
 function App() {
     const [theme, colorMode] = useMode();
@@ -32,7 +34,9 @@ function App() {
                             <Route path="/home" element={ <Home/> }/>
                             <Route path="/signup" element={ user?.email ? <Home user={ user }/> : <SignUp/> }/>
                             <Route path="/login" element={ user?.email ? <Home user={ user }/> : <Login/> }/>
-                            <Route path="/properties" element={ <PropertiesGrid/> }/>
+                            <Route path="/properties" element={ <NewProperties/> }/>
+                            <Route path="/properties/liked" element={ <LikedProperties/> }/>
+                            <Route path="/properties/trash" element={ <TrashProperties/> }/>
                         </Routes>
                     </main>
                 </div>

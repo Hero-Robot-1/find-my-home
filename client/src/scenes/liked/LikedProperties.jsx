@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { serverUrl } from "../../index";
 
-const TrashProperties = () => {
+const LikedProperties = () => {
     const [APIData, setAPIData] = useState([]);
-    const query = { where: { archived: true } }
+    const query = { where: { archived: false, liked: true } }
     useEffect(() => {
         axios.post(`${ serverUrl() }/properties/query`, {
             query
@@ -16,8 +16,8 @@ const TrashProperties = () => {
     }, [])
 
     return (
-        <PropertiesGrid data={ APIData } mode={ 'trash' }></PropertiesGrid>
+        <PropertiesGrid data={ APIData } mode={ 'liked' }></PropertiesGrid>
     );
 }
 
-export default TrashProperties;
+export default LikedProperties;

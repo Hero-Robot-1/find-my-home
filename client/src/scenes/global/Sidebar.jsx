@@ -7,6 +7,8 @@ import { tokens } from "../../theme";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import DeleteIcon from '@mui/icons-material/Delete';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
     const theme = useTheme();
@@ -97,9 +99,30 @@ const Sidebar = ({ user }) => {
                             setSelected={ setSelected }
                         />
                         <Item
-                            title="Properties"
+                            title="New Properties"
                             to="/properties"
                             icon={ <ReceiptOutlinedIcon/> }
+                            selected={ selected }
+                            setSelected={ setSelected }
+                        />
+                        <Item
+                            title="Liked Properties"
+                            to="/properties/liked"
+                            icon={ <FavoriteIcon/> }
+                            selected={ selected }
+                            setSelected={ setSelected }
+                        />
+                        {/*<Item*/}
+                        {/*    title="Reach out"*/}
+                        {/*    to="/*/}
+                        {/*    icon={ <ReceiptOutlinedIcon/> }*/}
+                        {/*    selected={ selected }*/}
+                        {/*    setSelected={ setSelected }*/}
+                        {/*/>*/}
+                        <Item
+                            title="Trash"
+                            to="/properties/trash"
+                            icon={ <DeleteIcon/> }
                             selected={ selected }
                             setSelected={ setSelected }
                         />

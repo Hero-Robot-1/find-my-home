@@ -4,18 +4,20 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { serverUrl } from "../../index";
 
-const NewProperties = () => {
+const TrashProperties = () => {
     const [APIData, setAPIData] = useState([]);
+    const query = { where: { archived: true } }
     useEffect(() => {
-        axios.get(`${ serverUrl() }/properties`)
-            .then((response) => {
-                setAPIData(response.data.properties);
-            })
+        axios.post(`${ serverUrl() }/properties/query`, {
+            query
+        }).then((response) => {
+            setAPIData(response.data.properties);
+        })
     }, [])
 
     return (
-        <PropertiesGrid data={ APIData } mode={ 'new' }></PropertiesGrid>
+        <PropertiesGrid data={ APIData } mode={ 'trash' }></PropertiesGrid>
     );
 }
 
-export default NewProperties;
+export default TrashProperties;

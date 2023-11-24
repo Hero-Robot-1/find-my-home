@@ -43,7 +43,7 @@ const PropertyCard = ({ mode, item }) => {
         });
     }
 
-    const updateUnArchive = (status) => {
+    const updateUnArchive = () => {
         setArchived(false)
         axios.patch(`${ serverUrl() }/properties/${ id }`, {
             fields: ['archived'],
@@ -73,6 +73,7 @@ const PropertyCard = ({ mode, item }) => {
                 sx={ { maxWidth: 345, maxHeight: 150 } }
                 image={ item.primaryImage }
                 alt={ item.title }
+                onClick={}
             />
             <CardContent
                 sx={ { maxWidth: 345, maxHeight: 60 } }
@@ -91,12 +92,6 @@ const PropertyCard = ({ mode, item }) => {
                 </Stack>
             </CardContent>
             <CardActions disableSpacing>
-
-                {/*<IconButton aria-label="share">*/ }
-                {/*    <ShareIcon />*/ }
-                {/*</IconButton>*/ }
-
-
                 { archived === false ?
                     (<React.Fragment>
                         <IconButton aria-label="add to favorites">

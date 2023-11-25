@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch';
+import { serverUrl } from "../../index";
 
 const SignUp = () => {
     const { handleGoogle, loading, error } = useFetch(
-        "http://localhost:3001/signup"
+        serverUrl()
     );
 
     useEffect(() => {

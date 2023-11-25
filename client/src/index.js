@@ -11,5 +11,5 @@ root.render(
     </BrowserRouter>
 );
 export const serverUrl = () => {
-    return process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : 'https://server-vies.onrender.com'
+    return process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : 'https://find-my-home-server.onrender.com'
 }

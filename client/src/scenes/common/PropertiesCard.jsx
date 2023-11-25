@@ -21,6 +21,7 @@ import "./Card.scss";
 import RestoreIcon from '@mui/icons-material/Restore';
 import CallIcon from '@mui/icons-material/Call';
 import ExploreIcon from "@mui/icons-material/Explore";
+import Tooltip from '@mui/material/Tooltip';
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -145,18 +146,19 @@ const PropertyCard = ({ mode, item, onDeleteHandler }) => {
 
     return (
         <Card className={ merchant ? 'merchant-card' : 'non-merchant-card' }>
-
-            <CardHeader className="card-header"
-                        title={ item.title }
-                        subheader={ item.price }
-                        action={
-                            <IconButton className="card-header-action" onClick={ () => {
-                                window.open(item.link, "_blank")
-                            } }>
-                                <FindInPageIcon xlinkHref={ item.link }/>
-                            </IconButton>
-                        }
-            />
+            <Tooltip title={<h1 style={{ fontSize: 12 }}>{ item.description }</h1>} placement={"left"} enterDelay={500}>
+                <CardHeader className="card-header"
+                            title={ item.title }
+                            subheader={ item.price }
+                            action={
+                                <IconButton className="card-header-action" onClick={ () => {
+                                    window.open(item.link, "_blank")
+                                } }>
+                                    <FindInPageIcon xlinkHref={ item.link }/>
+                                </IconButton>
+                            }
+                />
+            </Tooltip>
             <CardMedia>
                 <ImageCarousel images={ item.images }/>
             </CardMedia>

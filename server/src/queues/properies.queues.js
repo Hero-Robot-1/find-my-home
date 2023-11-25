@@ -2,7 +2,7 @@ import Queue from "bull";
 import { getYad2Page } from "../facades/properties.facade.js";
 import * as dao from "../models/properties.dao.js";
 
-const jobQueue = new Queue('create-properties-queues');
+const jobQueue = new Queue('create-properties-queues', process.env.REDIS_URL);
 export const producePagesToQueue = async (pages = 1,
                                           startDate = null,
                                           endDate = Date.now()) => {

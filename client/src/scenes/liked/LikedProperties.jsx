@@ -5,7 +5,13 @@ import axios from "axios";
 import { serverUrl } from "../../index";
 
 const LikedProperties = () => {
-    const [APIData, setAPIData] = useState([]);
+    const [APIData, setAPIData] = useState(
+        []);
+    const onDeleteHandler = async (key) => {
+        const newData = APIData.filter(item => item.propertyId !== key)
+        await setAPIData(newData)
+    };
+
     const query = { where: { archived: false, liked: true } }
     useEffect(() => {
         axios.post(`${ serverUrl() }/properties/query`, {
@@ -16,7 +22,7 @@ const LikedProperties = () => {
     }, [])
 
     return (
-        <PropertiesGrid data={ APIData } mode={ 'liked' }></PropertiesGrid>
+        <PropertiesGrid data={ APIData } mode={ 'liked' } onDeleteHandler={ onDeleteHandler }></PropertiesGrid>
     );
 }
 

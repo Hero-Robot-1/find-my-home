@@ -57,6 +57,12 @@ const Property = (sequelize) => {
         },
         liked: {
             type: BOOLEAN
+        },
+        call: {
+            type: BOOLEAN
+        },
+        explore: {
+            type: BOOLEAN
         }
     })
 };

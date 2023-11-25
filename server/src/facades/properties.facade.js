@@ -21,7 +21,9 @@ export const yad2ItemToProperty = (yad2Item) => {
         link: `https://www.yad2.co.il/s/c/${yad2Item.id}`,
         merchant: yad2Item.merchant,
         archived: false,
-        liked: false
+        liked: false,
+        call: false,
+        explore: false
     }
 }
 

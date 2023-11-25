@@ -9,6 +9,8 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import DeleteIcon from '@mui/icons-material/Delete';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import CallIcon from "@mui/icons-material/Call";
+import ExploreIcon from '@mui/icons-material/Explore';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
     const theme = useTheme();
@@ -84,13 +86,13 @@ const Sidebar = ({ user }) => {
                     </MenuItem>
 
                     <Box paddingLeft={ isCollapsed ? undefined : "1%" }>
-                        <Item
-                            title="Dashboard"
-                            to="/"
-                            icon={ <HomeOutlinedIcon/> }
-                            selected={ selected }
-                            setSelected={ setSelected }
-                        />
+                        {/*<Item*/}
+                        {/*    title="Dashboard"*/}
+                        {/*    to="/"*/}
+                        {/*    icon={ <HomeOutlinedIcon/> }*/}
+                        {/*    selected={ selected }*/}
+                        {/*    setSelected={ setSelected }*/}
+                        {/*/>*/}
                         <Item
                             title="New Properties"
                             to="/properties"
@@ -105,13 +107,20 @@ const Sidebar = ({ user }) => {
                             selected={ selected }
                             setSelected={ setSelected }
                         />
-                        {/*<Item*/}
-                        {/*    title="Reach out"*/}
-                        {/*    to="/*/}
-                        {/*    icon={ <ReceiptOutlinedIcon/> }*/}
-                        {/*    selected={ selected }*/}
-                        {/*    setSelected={ setSelected }*/}
-                        {/*/>*/}
+                        <Item
+                            title="Reach out"
+                            to="/properties/reach-out"
+                            icon={ <CallIcon/> }
+                            selected={ selected }
+                            setSelected={ setSelected }
+                        />
+                        <Item
+                            title="Explore"
+                            to="/properties/explore"
+                            icon={ <ExploreIcon/> }
+                            selected={ selected }
+                            setSelected={ setSelected }
+                        />
                         <Item
                             title="Trash"
                             to="/properties/trash"

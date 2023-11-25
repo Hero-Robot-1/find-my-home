@@ -18,16 +18,36 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import ImageCarousel from "./Carousel";
 import { CardActionArea } from "@mui/material";
 import "./Card.scss";
+import RestoreIcon from '@mui/icons-material/Restore';
+import CallIcon from '@mui/icons-material/Call';
+import ExploreIcon from "@mui/icons-material/Explore";
+
 
 const Item = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(1),
 }));
-const PropertyCard = ({ mode, item }) => {
+const PropertyCard = ({ mode, item, onDeleteHandler }) => {
+    console.log("@@@@ mode " + mode)
     const [id, setId] = useState(item.propertyId);
     const [liked, setLiked] = useState(item.liked);
+    const [call, setCall] = useState(item.call);
+    const [explore, setExplore] = useState(item.call);
     const [archived, setArchived] = useState(item.archived);
     const [merchant, setMerchant] = useState(item.merchant);
+
+    const updateLiked = () => {
+        onDeleteHandler(id)
+        setLiked(true)
+        axios.patch(`${ serverUrl() }/properties/${ id }`, {
+            fields: ['liked'],
+            data: {
+                liked: true
+            }
+        });
+    }
+
     const updateArchived = () => {
+        onDeleteHandler(id)
         setArchived(true)
         axios.patch(`${ serverUrl() }/properties/${ id }`, {
             fields: ['archived'],
@@ -37,28 +57,95 @@ const PropertyCard = ({ mode, item }) => {
         });
     }
 
-    const updateLiked = (status) => {
-        setLiked(status)
+    const updateUnArchive = () => {
+        onDeleteHandler(id)
+        setArchived(false)
         axios.patch(`${ serverUrl() }/properties/${ id }`, {
-            fields: ['liked'],
+            fields: ['archived', 'liked', 'call', 'explore'],
             data: {
-                liked: status
+                archived: false,
+                liked: false,
+                call: false,
+                explore: false
             }
         });
     }
 
-    const updateUnArchive = () => {
-        setArchived(false)
+    const updateShouldCall = () => {
+        onDeleteHandler(id)
+        setCall(true)
         axios.patch(`${ serverUrl() }/properties/${ id }`, {
-            fields: ['archived'],
+            fields: ['call'],
             data: {
-                archived: false
+                call: true
             }
         });
+    }
+
+    const updateExplore = () => {
+        onDeleteHandler(id)
+        setExplore(true)
+        axios.patch(`${ serverUrl() }/properties/${ id }`, {
+            fields: ['explore'],
+            data: {
+                explore: true
+            }
+        });
+    }
+
+    const renderActions = () => {
+        if (mode === 'trash') {  //trash
+            return ((<IconButton aria-label="unarchive">
+                <RestoreIcon onClick={ updateUnArchive }/>
+            </IconButton>))  //trash
+        } else if (mode === 'new') {  //new
+            return (<React.Fragment>
+                <IconButton aria-label="add to favorites">
+                    <FavoriteIcon style={ { color: 'red' } } onClick={ () => {
+                        updateLiked(!liked)
+                    } }/>
+                </IconButton>
+                <IconButton aria-label="archive">
+                    <ClearIcon style={ { color: 'black'} }
+                               onClick={ updateArchived }/>
+                </IconButton>
+            </React.Fragment>)
+        } else if (mode === 'liked') { //liked
+            return (<React.Fragment>
+                <IconButton aria-label="reach out">
+                    <CallIcon style={ { color: 'blue' } } onClick={ () => {
+                        updateShouldCall()
+                    } }/>
+                </IconButton>
+                <IconButton aria-label="archive">
+                    <ClearIcon style={ { color: 'black' } }
+                               onClick={ updateArchived }/>
+                </IconButton>
+            </React.Fragment>)
+        } else if (mode === 'explore') { //liked
+            return (<React.Fragment>
+                <IconButton aria-label="archive">
+                    <ClearIcon style={ { color: 'black' } }
+                               onClick={ updateArchived }/>
+                </IconButton>
+            </React.Fragment>)
+        } else {
+            return (<React.Fragment>
+                <IconButton aria-label="explore">
+                    <ExploreIcon style={ { color: 'green' } } onClick={ () => {
+                        updateExplore()
+                    } }/>
+                </IconButton>
+                <IconButton aria-label="archive">
+                    <ClearIcon style={ { color: 'black' } }
+                               onClick={ updateArchived }/>
+                </IconButton>
+            </React.Fragment>)
+        }
     }
 
     return (
-        <Card className={ merchant ? 'merchant-card' : 'non-merchant-card'}>
+        <Card className={ merchant ? 'merchant-card' : 'non-merchant-card' }>
 
             <CardHeader className="card-header"
                         title={ item.title }
@@ -77,7 +164,7 @@ const PropertyCard = ({ mode, item }) => {
 
             <CardContent className="card-stack">
                 <Stack
-                    direction="row-reverse" spacing={ 2 } >
+                    direction="row-reverse" spacing={ 2 }>
                     <Item>
                         { item.rooms }
                     </Item>
@@ -90,25 +177,9 @@ const PropertyCard = ({ mode, item }) => {
                 </Stack>
             </CardContent>
 
-            <CardActionArea className="card-action-area" disableRipple={true} high>
+            <CardActionArea className="card-action-area" disableRipple={ true } high>
                 <CardActions disableSpacing>
-                    { archived === false ?
-                        (<React.Fragment>
-                            <IconButton aria-label="add to favorites">
-                                <FavoriteIcon style={ { color: liked ? 'red' : 'black' } } onClick={ () => {
-                                    updateLiked(!liked)
-                                } }/>
-                            </IconButton>
-                            <IconButton aria-label="archive">
-                                <ClearIcon style={ { color: archived ? 'black' : 'green' } }
-                                           onClick={ updateArchived }/>
-                            </IconButton>
-                        </React.Fragment>) :
-                        (<IconButton aria-label="unarchive">
-                            <ClearIcon onClick={ updateUnArchive }/>
-                        </IconButton>)
-                    }
-
+                    {renderActions()}
                 </CardActions>
             </CardActionArea>
         </Card>

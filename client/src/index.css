@@ -6,8 +6,7 @@
 html,
 body,
 #root,
-.app,
-.content {
+.app {
   height: 100%;
   width: 100%;
   font-family: "Source Sans Pro", sans-serif;
@@ -36,3 +35,25 @@ body,
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.sidebar {
+  top: 0;
+  left: 0;
+  height: 100%;
+  position: fixed;
+}
+
+.content {
+  width: 100%;
+  float: left;
+  min-height: 100%;
+  margin-left: 240px;
+}
+
+.content-expand {
+  width: 100%;
+  float: left;
+  min-height: 100%;
+  margin-left: 80px;
+}
+

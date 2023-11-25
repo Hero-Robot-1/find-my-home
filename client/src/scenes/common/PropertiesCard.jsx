@@ -27,7 +27,6 @@ const Item = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(1),
 }));
 const PropertyCard = ({ mode, item, onDeleteHandler }) => {
-    console.log("@@@@ mode " + mode)
     const [id, setId] = useState(item.propertyId);
     const [liked, setLiked] = useState(item.liked);
     const [call, setCall] = useState(item.call);

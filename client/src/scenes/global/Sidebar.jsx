@@ -6,7 +6,6 @@ import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import DeleteIcon from '@mui/icons-material/Delete';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CallIcon from "@mui/icons-material/Call";
@@ -58,7 +57,7 @@ const Sidebar = ({ user }) => {
                 },
             } }
         >
-            <ProSidebar collapsed={ isCollapsed } width={240} style={{maxWidth:250}}>
+            <ProSidebar collapsed={ isCollapsed } width={ 240 } style={ { maxWidth: 250, position: "fixed" } }>
                 <Menu iconShape="square">
                     <MenuItem
                         onClick={ () => setIsCollapsed(!isCollapsed) }
@@ -86,13 +85,13 @@ const Sidebar = ({ user }) => {
                     </MenuItem>
 
                     <Box paddingLeft={ isCollapsed ? undefined : "1%" }>
-                        {/*<Item*/}
-                        {/*    title="Dashboard"*/}
-                        {/*    to="/"*/}
-                        {/*    icon={ <HomeOutlinedIcon/> }*/}
-                        {/*    selected={ selected }*/}
-                        {/*    setSelected={ setSelected }*/}
-                        {/*/>*/}
+                        {/*<Item*/ }
+                        {/*    title="Dashboard"*/ }
+                        {/*    to="/"*/ }
+                        {/*    icon={ <HomeOutlinedIcon/> }*/ }
+                        {/*    selected={ selected }*/ }
+                        {/*    setSelected={ setSelected }*/ }
+                        {/*/>*/ }
                         <Item
                             title="New Properties"
                             to="/properties"

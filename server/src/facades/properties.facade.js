@@ -31,7 +31,7 @@ export const getYad2Page = async (pageNumber = 1,
                                   startDate = null,
                                   endDate = Date.now()) => {
     let url = `https://gw.yad2.co.il/feed-search-legacy/realestate/rent?topArea=2&area=1&' +
-        'city=5000&rooms=4--1&price=9450-9500&parking=1&elevator=1&forceLdLoad=true&page=${pageNumber}`;
+        'city=5000&rooms=3--1&price=5000-9500&parking=1&elevator=1&forceLdLoad=true&page=${pageNumber}`;
 
     if (!!startDate) {
         url += `&startDate=${startDate}-${endDate}`

@@ -38,7 +38,15 @@
 }
 
 .MuiCardActionArea-focusHighlight {
-  background-color: inherit;
+  background-color: inherit !important;
+}
+
+.MuiTypography-root {
+  color: black !important;
+}
+
+.MuiSvgIcon-root {
+  color: grey !important;
 }
 
 //.MuiCardHeader-content {

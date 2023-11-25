@@ -33,13 +33,13 @@ function App() {
                         <Topbar user={ user }/>
                         <Routes>
                             <Route path="/" element={ <NewProperties/> }/>
-                            <Route path="/signup" element={ user?.email ? <NewProperties user={ user }/> : <SignUp/> }/>
-                            <Route path="/login" element={ user?.email ? <NewProperties user={ user }/> : <Login/> }/>
-                            <Route path="/properties" element={ user?.email ? <NewProperties user={ user }/> : <SignUp/> }/>
-                            <Route path="/properties/liked" element={ user?.email ? <LikedProperties user={ user }/> : <SignUp/> }/>
-                            <Route path="/properties/reach-out" element={ user?.email ? <ReachOutProperties user={ user }/> : <SignUp/> }/>
-                            <Route path="/properties/explore" element={ user?.email ? <ExploreProperties user={ user }/> : <SignUp/> }/>
-                            <Route path="/properties/trash" element={ user?.email ? <TrashProperties user={ user }/> : <SignUp/> }/>
+                            {/*<Route path="/signup" element={ user?.email ? <NewProperties user={ user }/> : <SignUp/> }/>*/}
+                            {/*<Route path="/login" element={ user?.email ? <NewProperties user={ user }/> : <Login/> }/>*/}
+                            <Route path="/properties" element={ <NewProperties/> }/>
+                            <Route path="/properties/liked" element={ <LikedProperties/> }/>
+                            <Route path="/properties/reach-out" element={ <ReachOutProperties/> }/>
+                            <Route path="/properties/explore" element={ <ExploreProperties/> }/>
+                            <Route path="/properties/trash" element={ <TrashProperties/> }/>
                         </Routes>
                     </main>
                 </div>

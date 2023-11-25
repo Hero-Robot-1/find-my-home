@@ -21,7 +21,7 @@ const Topbar = ({ user }) => {
                     ) }
                 </IconButton>
 
-                <AccountMenu user={ user }/>
+                {/*<AccountMenu user={ user }/>*/}
             </Box>
         </Box>
     );

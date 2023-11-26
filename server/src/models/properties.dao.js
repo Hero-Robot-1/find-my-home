@@ -3,10 +3,15 @@ import { db } from './index.js';
 const Property = db.properties;
 
 export const listProperties = async (query) => {
-    return Property.findAll(query)
+    return Property.findAndCountAll(query)
         .then(data => {
             return {
-                properties: data
+                properties: data.rows,
+                pagination: {
+                    limit: query.limit,
+                    offset: query.offset,
+                    count: data.count
+                }
             };
         })
         .catch(err => {

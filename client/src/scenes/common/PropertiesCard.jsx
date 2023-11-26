@@ -147,17 +147,19 @@ const PropertyCard = ({ mode, item, onDeleteHandler }) => {
     return (
         <Card className={ merchant ? 'merchant-card' : 'non-merchant-card' }>
             <Tooltip title={<h1 style={{ fontSize: 12 }}>{ item.description }</h1>} placement={"left"} enterDelay={500}>
-                <CardHeader className="card-header"
-                            title={ item.title }
-                            subheader={ item.price }
-                            action={
-                                <IconButton className="card-header-action" onClick={ () => {
-                                    window.open(item.link, "_blank")
-                                } }>
-                                    <FindInPageIcon xlinkHref={ item.link }/>
-                                </IconButton>
-                            }
-                />
+                <div>
+                    <CardHeader className="card-header"
+                                title={ item.title }
+                                subheader={ item.price }
+                                action={
+                                    <IconButton className="card-header-action" onClick={ () => {
+                                        window.open(item.link, "_blank")
+                                    } }>
+                                        <FindInPageIcon xlinkHref={ item.link }/>
+                                    </IconButton>
+                                }
+                    />
+                </div>
             </Tooltip>
             <CardMedia>
                 <ImageCarousel images={ item.images }/>

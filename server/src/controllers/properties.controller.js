@@ -3,16 +3,23 @@ import * as dao from "../models/properties.dao.js";
 import { producePagesToQueue } from "../queues/properies.queues.js";
 
 export const listProperties = async (req, res) => {
-    const query = { where: { archived: false }, order: [['propertyDateAdded', 'DESC']] }
-    const properties = await dao.listProperties(query);
-    res.send(properties);
+    const limit = 30
+    const offset = req.query.page ? ((req.query.page - 1) * limit) : 0
+
+    const query = {
+        where: { archived: false, liked: false, call: false, explore: false },
+        order: [['propertyDateAdded', 'DESC']],
+        limit,
+        offset
+    }
+    const response = await dao.listProperties(query);
+    res.send(response);
 }
 
 export const queryProperties = async (req, res) => {
     const query = req.body.query;
-    console.log("@@@@@@@ query" + JSON.stringify(query))
-    const properties = await dao.listProperties(query);
-    res.send(properties);
+    const response = await dao.listProperties(query);
+    res.send(response);
 }
 
 export const createProperty = () => dao.createProperty();

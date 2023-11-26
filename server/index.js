@@ -15,7 +15,7 @@ app.use(
         extended: true,
     }),
 );
-db.sequelize.sync({ force: true })
+db.sequelize.sync()
     .then(() => {
         console.log("Synced db.");
     })

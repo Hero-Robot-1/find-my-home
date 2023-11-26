@@ -32,7 +32,7 @@ function App() {
                     <main className="content">
                         <Topbar user={ user }/>
                         <Routes>
-                            <Route path="/" element={ <NewProperties/> }/>
+                            <Route path="/*" element={ <NewProperties/> }/>
                             {/*<Route path="/signup" element={ user?.email ? <NewProperties user={ user }/> : <SignUp/> }/>*/}
                             {/*<Route path="/login" element={ user?.email ? <NewProperties user={ user }/> : <Login/> }/>*/}
                             <Route path="/properties" element={ <NewProperties/> }/>

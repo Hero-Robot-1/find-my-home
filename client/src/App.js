@@ -3,7 +3,6 @@ import { Route, Routes } from "react-router-dom";
 import Sidebar from "./scenes/global/Sidebar";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
-import { Home, Login, SignUp } from "./scenes/authentication";
 import Topbar from "./scenes/global/Topbar";
 import NewProperties from "./scenes/new-properties/NewProperties";
 import TrashProperties from "./scenes/trash/Trash";
@@ -35,7 +34,7 @@ function App() {
                             <Route path="/*" element={ <NewProperties/> }/>
                             {/*<Route path="/signup" element={ user?.email ? <NewProperties user={ user }/> : <SignUp/> }/>*/}
                             {/*<Route path="/login" element={ user?.email ? <NewProperties user={ user }/> : <Login/> }/>*/}
-                            <Route path="/properties" element={ <NewProperties/> }/>
+                            <Route exact path="/properties" element={ <NewProperties/> }/>
                             <Route path="/properties/liked" element={ <LikedProperties/> }/>
                             <Route path="/properties/reach-out" element={ <ReachOutProperties/> }/>
                             <Route path="/properties/explore" element={ <ExploreProperties/> }/>

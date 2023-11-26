@@ -14,8 +14,8 @@ const NewProperties = () => {
         await setAPIData(newData)
     };
 
-    const handlePageChange = () => {
-        setPage(page + 1);
+    const handlePageChange = (e, p) => {
+        setPage(p);
     }
 
     useEffect(() => {

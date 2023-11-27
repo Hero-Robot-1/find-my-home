@@ -6,6 +6,7 @@ export const yad2ItemToProperty = (yad2Item) => {
         propertyDateAdded: yad2Item.date_added,
         title: yad2Item.title_1,
         addressLine: yad2Item.row_1,
+        neighborhood: yad2Item.neighborhood,
         description: yad2Item.search_text,
         price: yad2Item.price,
         street: yad2Item.street,
@@ -16,7 +17,6 @@ export const yad2ItemToProperty = (yad2Item) => {
         rooms: !!yad2Item.row_3 && yad2Item.row_3[0],
         meters: !!yad2Item.row_3 && yad2Item.row_3[1],
         floorNumber: !!yad2Item.row_3 && yad2Item.row_3[2],
-        primaryImage: !!yad2Item.images_urls && yad2Item.images_urls[0],
         images: yad2Item.images_urls,
         link: `https://www.yad2.co.il/s/c/${yad2Item.id}`,
         merchant: yad2Item.merchant,
@@ -43,7 +43,8 @@ export const getYad2Page = async (pageNumber = 1,
         .then(response => {
             const properties = response.data?.data?.feed?.feed_items
                 .map(yad2ItemToProperty)
-                .filter((item) => !!item.propertyId);
+                .filter((item) => !!item.propertyId)
+                .filter((item) => item.images.length > 0);
             const pagination = response.data?.data?.pagination;
 
             return {

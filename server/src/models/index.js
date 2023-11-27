@@ -19,6 +19,9 @@ const Property = (sequelize) => {
         addressLine: {
             type: STRING
         },
+        neighborhood: {
+            type: STRING
+        },
         description: {
             type: TEXT
         },
@@ -38,9 +41,6 @@ const Property = (sequelize) => {
             type: STRING
         },
         floorNumber: {
-            type: STRING
-        },
-        primaryImage: {
             type: STRING
         },
         images: {

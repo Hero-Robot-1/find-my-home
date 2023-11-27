@@ -5,14 +5,18 @@ import { producePagesToQueue } from "../queues/properies.queues.js";
 export const listProperties = async (req, res) => {
     const limit = 30
     const offset = req.query.page ? ((req.query.page - 1) * limit) : 0
-
-    const query = {
-        where: { archived: false, liked: false, call: false, explore: false },
+    const neighborhood = req.query.neighborhood
+    let query = {
+        where: { archived: false, liked: false, call: false, explore: false, },
         order: [['propertyDateAdded', 'DESC']],
         limit,
         offset
     }
+    if (!!neighborhood) {
+        query.where = { ...query.where, neighborhood }
+    }
     const response = await dao.listProperties(query);
+
     res.send(response);
 }
 
@@ -21,8 +25,6 @@ export const queryProperties = async (req, res) => {
     const response = await dao.listProperties(query);
     res.send(response);
 }
-
-export const createProperty = () => dao.createProperty();
 
 export const updateProperty = async (req, res) => {
     const id = req.params.id;

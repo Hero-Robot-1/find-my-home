@@ -8,8 +8,6 @@ routes.get('/', (req, res) => {
     res.json({ message: "Hello from server :)" });
 });
 
-routes.post("/properties", properties.createProperty);
-
 routes.get("/properties", properties.listProperties);
 
 routes.post("/properties/query", properties.queryProperties);

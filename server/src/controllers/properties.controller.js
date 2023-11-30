@@ -1,6 +1,7 @@
 import { getYad2Page } from "../facades/properties.facade.js";
 import * as dao from "../models/properties.dao.js";
 import { producePagesToQueue } from "../queues/properies.queues.js";
+import { getLatestProperties } from "../jobs/yad2.job.js";
 
 export const listProperties = async (req, res) => {
     const limit = 30
@@ -39,11 +40,18 @@ export const updateProperty = async (req, res) => {
     res.send(message);
 }
 
-export const syncProperties = async (req, res) => {
+export const initProperties = async (req, res) => {
     const yad2Page = await getYad2Page(1);
     await dao.bulkCreateProperties(yad2Page.properties);
     await producePagesToQueue(yad2Page.pagination?.last_page || 1)
     res.send({
         message: `${ yad2Page.pagination?.last_page } Jobs were produced.`
+    })
+};
+
+export const syncProperties = async (req, res) => {
+    const { properties } = await getLatestProperties();
+    res.send({
+        properties
     })
 };

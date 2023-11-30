@@ -9,6 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { neighborhoods } from "../../consts/neighborhoods";
+import Button from '@mui/material/Button';
 
 const NewProperties = () => {
     const [APIData, setAPIData] = useState([]);
@@ -27,6 +28,13 @@ const NewProperties = () => {
     const handleNeighborhoodChange = (event: SelectChangeEvent) => {
         setPage(1);
         setNeighborhood(event.target.value);
+    };
+
+    const syncProperties = () => {
+        axios.post(`${ serverUrl() }/properties/sync`)
+            .then((response) => {
+                setAPIData(APIData.concat(response.data.properties));
+            })
     };
 
     useEffect(() => {
@@ -51,8 +59,10 @@ const NewProperties = () => {
                         shape="rounded"
                         onChange={handlePageChange}
                         style={ { justifyContent: "center", display: "flex" } }/> : null }
-
-            <FormControl sx={{width: "200px", left: "50px"}} variant={"outlined"}>
+            <Button onClick={syncProperties} variant="outlined" size="large" sx={{ left: "50px", height: "53px", color: "gray"}}>
+                Sync
+            </Button>
+            <FormControl sx={{width: "200px", left: "90px"}} variant={"outlined"}>
                 <InputLabel id="demo-simple-select-label">Neighborhood</InputLabel>
                 <Select
                     labelId="demo-simple-select-label"

@@ -12,7 +12,9 @@ routes.get("/properties", properties.listProperties);
 
 routes.post("/properties/query", properties.queryProperties);
 
-routes.post("/properties/sync/yad2", properties.syncProperties);
+routes.post("/properties/init/yad2", properties.initProperties);
+
+routes.post("/properties/sync", properties.syncProperties);
 
 routes.patch("/properties/:id", properties.updateProperty);
 

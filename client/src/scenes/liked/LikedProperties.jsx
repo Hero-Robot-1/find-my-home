@@ -12,7 +12,7 @@ const LikedProperties = () => {
         await setAPIData(newData)
     };
 
-    const query = { where: { archived: false, liked: true } }
+    const query = { where: { archived: false, liked: true, call: false } }
     useEffect(() => {
         axios.post(`${ serverUrl() }/properties/query`, {
             query

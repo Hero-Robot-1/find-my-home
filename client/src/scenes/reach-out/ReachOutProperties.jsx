@@ -12,7 +12,7 @@ const ReachOutProperties = () => {
         await setAPIData(newData)
     };
 
-    const query = { where: { archived: false, call: true } }
+    const query = { where: { archived: false, call: true, explore: false } }
     useEffect(() => {
         axios.post(`${ serverUrl() }/properties/query`, {
             query

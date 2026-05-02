@@ -1,31 +1,69 @@
-import { getYad2Page } from "../facades/properties.facade.js";
+import { getYad2AllProperties } from "../facades/properties.facade.js";
 import * as dao from "../models/properties.dao.js";
-import { producePagesToQueue } from "../queues/properies.queues.js";
 import { getLatestProperties } from "../jobs/yad2.job.js";
+import { Op } from 'sequelize';
+import { db } from '../models/index.js';
+
+const numericWhere = (field, op, value) =>
+    db.sequelize.where(
+        db.sequelize.cast(db.sequelize.col(field), 'NUMERIC'),
+        { [op]: value }
+    );
+
+const toFloat = (val) => {
+    const n = parseFloat(val);
+    return isNaN(n) ? null : n;
+};
 
 export const listProperties = async (req, res) => {
-    const limit = 30
-    const offset = req.query.page ? ((req.query.page - 1) * limit) : 0
-    const neighborhood = req.query.neighborhood
-    let query = {
-        where: { archived: false, liked: false, call: false, explore: false, },
+    const limit = 30;
+    const offset = req.query.page ? ((req.query.page - 1) * limit) : 0;
+    const {
+        neighborhood,
+        rooms,
+        minMeters, maxMeters,
+        minPrice, maxPrice,
+        minFloor, maxFloor,
+        merchant,
+    } = req.query;
+
+    const baseWhere = { archived: false, liked: false, call: false, explore: false };
+    if (neighborhood) baseWhere.neighborhood = neighborhood;
+    if (merchant !== undefined && merchant !== '') baseWhere.merchant = merchant === 'true';
+
+    const numericConditions = [];
+
+    if (toFloat(rooms) !== null) {
+        numericConditions.push(numericWhere('rooms', Op.eq, toFloat(rooms)));
+    }
+    if (toFloat(minMeters) !== null) numericConditions.push(numericWhere('meters', Op.gte, toFloat(minMeters)));
+    if (toFloat(maxMeters) !== null) numericConditions.push(numericWhere('meters', Op.lte, toFloat(maxMeters)));
+    if (toFloat(minPrice) !== null) {
+        numericConditions.push(numericWhere('price', Op.gte, toFloat(minPrice)));
+        numericConditions.push(numericWhere('price', Op.gt, 0));
+    }
+    if (toFloat(maxPrice) !== null) numericConditions.push(numericWhere('price', Op.lte, toFloat(maxPrice)));
+    if (toFloat(minFloor) !== null) numericConditions.push(numericWhere('floorNumber', Op.gte, toFloat(minFloor)));
+    if (toFloat(maxFloor) !== null) numericConditions.push(numericWhere('floorNumber', Op.lte, toFloat(maxFloor)));
+
+    const query = {
+        where: numericConditions.length > 0
+            ? { ...baseWhere, [Op.and]: numericConditions }
+            : baseWhere,
         order: [['propertyDateAdded', 'DESC']],
         limit,
-        offset
-    }
-    if (!!neighborhood) {
-        query.where = { ...query.where, neighborhood }
-    }
-    const response = await dao.listProperties(query);
+        offset,
+    };
 
+    const response = await dao.listProperties(query);
     res.send(response);
-}
+};
 
 export const queryProperties = async (req, res) => {
     const query = req.body.query;
     const response = await dao.listProperties(query);
     res.send(response);
-}
+};
 
 export const updateProperty = async (req, res) => {
     const id = req.params.id;
@@ -33,25 +71,19 @@ export const updateProperty = async (req, res) => {
     const data = req.body.data;
 
     const dataToUpdate = fields.reduce((acc, field) => {
-        const fieldValue = data[field];
-        return { ...acc, [field]: fieldValue };
+        return { ...acc, [field]: data[field] };
     }, {});
     const message = await dao.updateProperty(id, dataToUpdate);
     res.send(message);
-}
+};
 
 export const initProperties = async (req, res) => {
-    const yad2Page = await getYad2Page(1);
-    await dao.bulkCreateProperties(yad2Page.properties);
-    await producePagesToQueue(yad2Page.pagination?.last_page || 1)
-    res.send({
-        message: `${ yad2Page.pagination?.last_page } Jobs were produced.`
-    })
+    const { properties } = await getYad2AllProperties();
+    await dao.bulkCreateProperties(properties);
+    res.send({ message: `${properties.length} properties synced.` });
 };
 
 export const syncProperties = async (req, res) => {
     const { properties } = await getLatestProperties();
-    res.send({
-        properties
-    })
+    res.send({ properties });
 };

@@ -13,33 +13,44 @@ import ExploreProperties from "./scenes/explore/ExploreProperties";
 function App() {
     const [theme, colorMode] = useMode();
     const [user, setUser] = useState({});
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
     useEffect(() => {
         const theUser = localStorage.getItem("user");
-
         if (theUser && !theUser.includes("undefined")) {
             setUser(JSON.parse(theUser));
         }
     }, []);
 
+    useEffect(() => {
+        if (theme.palette.mode === "dark") {
+            document.documentElement.classList.add("dark");
+        } else {
+            document.documentElement.classList.remove("dark");
+        }
+    }, [theme.palette.mode]);
+
     return (
-        <ColorModeContext.Provider value={ colorMode }>
-            <ThemeProvider theme={ theme }>
-                <CssBaseline/>
+        <ColorModeContext.Provider value={colorMode}>
+            <ThemeProvider theme={theme}>
+                <CssBaseline />
                 <div className="app">
-                    <Sidebar className="sidebar" user={ user }/>
-                    <main className="content">
-                        <Topbar user={ user }/>
-                        <Routes>
-                            <Route path="/*" element={ <NewProperties/> }/>
-                            {/*<Route path="/signup" element={ user?.email ? <NewProperties user={ user }/> : <SignUp/> }/>*/}
-                            {/*<Route path="/login" element={ user?.email ? <NewProperties user={ user }/> : <Login/> }/>*/}
-                            <Route exact path="/properties" element={ <NewProperties/> }/>
-                            <Route path="/properties/liked" element={ <LikedProperties/> }/>
-                            <Route path="/properties/reach-out" element={ <ReachOutProperties/> }/>
-                            <Route path="/properties/explore" element={ <ExploreProperties/> }/>
-                            <Route path="/properties/trash" element={ <TrashProperties/> }/>
-                        </Routes>
+                    <Sidebar user={user} onCollapsedChange={setSidebarCollapsed} />
+                    <main
+                        className="flex flex-col flex-1 min-h-screen transition-all duration-300"
+                        style={{ marginLeft: sidebarCollapsed ? 64 : 240 }}
+                    >
+                        <Topbar user={user} />
+                        <div className="flex-1">
+                            <Routes>
+                                <Route path="/*" element={<NewProperties />} />
+                                <Route exact path="/properties" element={<NewProperties />} />
+                                <Route path="/properties/liked" element={<LikedProperties />} />
+                                <Route path="/properties/reach-out" element={<ReachOutProperties />} />
+                                <Route path="/properties/explore" element={<ExploreProperties />} />
+                                <Route path="/properties/trash" element={<TrashProperties />} />
+                            </Routes>
+                        </div>
                     </main>
                 </div>
             </ThemeProvider>

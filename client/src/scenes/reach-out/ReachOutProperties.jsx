@@ -22,7 +22,13 @@ const ReachOutProperties = () => {
     }, [])
 
     return (
-        <PropertiesGrid data={ APIData } mode={ 'reach-out' } onDeleteHandler={ onDeleteHandler }></PropertiesGrid>
+        <div className="p-6">
+            <div className="mb-6">
+                <h1 className="text-2xl font-bold text-foreground">Reach Out</h1>
+                <p className="text-sm text-muted-foreground mt-0.5">{APIData.length > 0 ? `${APIData.length} listings` : 'Properties to call about'}</p>
+            </div>
+            <PropertiesGrid data={APIData} mode="reach-out" onDeleteHandler={onDeleteHandler} />
+        </div>
     );
 }
 

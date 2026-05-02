@@ -1,192 +1,160 @@
 import * as React from 'react';
 import { useState } from 'react';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import IconButton from '@mui/material/IconButton';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import Stack from '@mui/material/Stack';
-import Paper from '@mui/material/Paper';
-import { styled } from '@mui/material/styles'
-import FindInPageIcon from '@mui/icons-material/FindInPage';
 import axios from "axios";
 import { serverUrl } from "../../index";
-import ClearIcon from '@mui/icons-material/Clear';
-import "react-responsive-carousel/lib/styles/carousel.min.css";
 import ImageCarousel from "./Carousel";
-import { CardActionArea } from "@mui/material";
-import "./Card.scss";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ClearIcon from '@mui/icons-material/Clear';
+import FindInPageIcon from '@mui/icons-material/FindInPage';
 import RestoreIcon from '@mui/icons-material/Restore';
 import CallIcon from '@mui/icons-material/Call';
-import ExploreIcon from "@mui/icons-material/Explore";
-import Tooltip from '@mui/material/Tooltip';
+import ExploreIcon from '@mui/icons-material/Explore';
 
+const ActionButton = ({ onClick, children, variant = "default", title }) => {
+    const styles = {
+        default: "text-muted-foreground hover:text-foreground hover:bg-accent",
+        danger: "text-muted-foreground hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40",
+        like: "text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40",
+        call: "text-muted-foreground hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/40",
+        explore: "text-muted-foreground hover:text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-950/40",
+    };
+    return (
+        <button
+            onClick={onClick}
+            title={title}
+            className={`p-2 rounded-md transition-colors duration-150 ${styles[variant]}`}
+        >
+            {children}
+        </button>
+    );
+};
 
-const Item = styled(Paper)(({ theme }) => ({
-    padding: theme.spacing(1),
-}));
 const PropertyCard = ({ mode, item, onDeleteHandler }) => {
-    const [id, setId] = useState(item.propertyId);
-    const [liked, setLiked] = useState(item.liked);
-    const [call, setCall] = useState(item.call);
-    const [explore, setExplore] = useState(item.call);
-    const [archived, setArchived] = useState(item.archived);
-    const [merchant, setMerchant] = useState(item.merchant);
+    const [id] = useState(item.propertyId);
+    const [merchant] = useState(item.merchant);
 
-    const updateLiked = () => {
-        onDeleteHandler(id)
-        setLiked(true)
-        axios.patch(`${ serverUrl() }/properties/${ id }`, {
-            fields: ['liked'],
-            data: {
-                liked: true
-            }
-        });
-    }
-
-    const updateArchived = () => {
-        onDeleteHandler(id)
-        setArchived(true)
-        axios.patch(`${ serverUrl() }/properties/${ id }`, {
-            fields: ['archived'],
-            data: {
-                archived: true
-            }
-        });
-    }
-
-    const updateUnArchive = () => {
-        onDeleteHandler(id)
-        setArchived(false)
-        axios.patch(`${ serverUrl() }/properties/${ id }`, {
-            fields: ['archived', 'liked', 'call', 'explore'],
-            data: {
-                archived: false,
-                liked: false,
-                call: false,
-                explore: false
-            }
-        });
-    }
-
-    const updateShouldCall = () => {
-        onDeleteHandler(id)
-        setCall(true)
-        axios.patch(`${ serverUrl() }/properties/${ id }`, {
-            fields: ['call'],
-            data: {
-                call: true
-            }
-        });
-    }
-
-    const updateExplore = () => {
-        onDeleteHandler(id)
-        setExplore(true)
-        axios.patch(`${ serverUrl() }/properties/${ id }`, {
-            fields: ['explore'],
-            data: {
-                explore: true
-            }
-        });
-    }
+    const patch = (fields, data) => {
+        onDeleteHandler(id);
+        axios.patch(`${serverUrl()}/properties/${id}`, { fields, data });
+    };
 
     const renderActions = () => {
-        if (mode === 'trash') {  //trash
-            return ((<IconButton aria-label="unarchive">
-                <RestoreIcon onClick={ updateUnArchive }/>
-            </IconButton>))  //trash
-        } else if (mode === 'new') {  //new
-            return (<React.Fragment>
-                <IconButton aria-label="add to favorites">
-                    <FavoriteIcon style={ { color: 'red' } } onClick={ () => {
-                        updateLiked(!liked)
-                    } }/>
-                </IconButton>
-                <IconButton aria-label="archive">
-                    <ClearIcon style={ { color: 'black'} }
-                               onClick={ updateArchived }/>
-                </IconButton>
-            </React.Fragment>)
-        } else if (mode === 'liked') { //liked
-            return (<React.Fragment>
-                <IconButton aria-label="reach out">
-                    <CallIcon style={ { color: 'blue' } } onClick={ () => {
-                        updateShouldCall()
-                    } }/>
-                </IconButton>
-                <IconButton aria-label="archive">
-                    <ClearIcon style={ { color: 'black' } }
-                               onClick={ updateArchived }/>
-                </IconButton>
-            </React.Fragment>)
-        } else if (mode === 'explore') { //liked
-            return (<React.Fragment>
-                <IconButton aria-label="archive">
-                    <ClearIcon style={ { color: 'black' } }
-                               onClick={ updateArchived }/>
-                </IconButton>
-            </React.Fragment>)
-        } else {
-            return (<React.Fragment>
-                <IconButton aria-label="explore">
-                    <ExploreIcon style={ { color: 'green' } } onClick={ () => {
-                        updateExplore()
-                    } }/>
-                </IconButton>
-                <IconButton aria-label="archive">
-                    <ClearIcon style={ { color: 'black' } }
-                               onClick={ updateArchived }/>
-                </IconButton>
-            </React.Fragment>)
+        if (mode === 'trash') {
+            return (
+                <ActionButton
+                    onClick={() => patch(['archived', 'liked', 'call', 'explore'], { archived: false, liked: false, call: false, explore: false })}
+                    variant="default"
+                    title="Restore"
+                >
+                    <RestoreIcon style={{ fontSize: 18 }} />
+                </ActionButton>
+            );
         }
-    }
+        if (mode === 'new') {
+            return (
+                <>
+                    <ActionButton onClick={() => patch(['liked'], { liked: true })} variant="like" title="Like">
+                        <FavoriteIcon style={{ fontSize: 18 }} />
+                    </ActionButton>
+                    <ActionButton onClick={() => patch(['archived'], { archived: true })} variant="danger" title="Archive">
+                        <ClearIcon style={{ fontSize: 18 }} />
+                    </ActionButton>
+                </>
+            );
+        }
+        if (mode === 'liked') {
+            return (
+                <>
+                    <ActionButton onClick={() => patch(['call'], { call: true })} variant="call" title="Reach out">
+                        <CallIcon style={{ fontSize: 18 }} />
+                    </ActionButton>
+                    <ActionButton onClick={() => patch(['archived'], { archived: true })} variant="danger" title="Archive">
+                        <ClearIcon style={{ fontSize: 18 }} />
+                    </ActionButton>
+                </>
+            );
+        }
+        if (mode === 'explore') {
+            return (
+                <ActionButton onClick={() => patch(['archived'], { archived: true })} variant="danger" title="Archive">
+                    <ClearIcon style={{ fontSize: 18 }} />
+                </ActionButton>
+            );
+        }
+        return (
+            <>
+                <ActionButton onClick={() => patch(['explore'], { explore: true })} variant="explore" title="Explore">
+                    <ExploreIcon style={{ fontSize: 18 }} />
+                </ActionButton>
+                <ActionButton onClick={() => patch(['archived'], { archived: true })} variant="danger" title="Archive">
+                    <ClearIcon style={{ fontSize: 18 }} />
+                </ActionButton>
+            </>
+        );
+    };
+
+    const price = item.price && item.price !== '0'
+        ? `₪${parseInt(item.price).toLocaleString()}`
+        : null;
 
     return (
-        <Card className={ merchant ? 'merchant-card' : 'non-merchant-card' }>
-            <Tooltip title={<h1 style={{ fontSize: 12 }}>{ item.description }</h1>} placement={"left"} enterDelay={500}>
-                <div>
-                    <CardHeader className="card-header"
-                                title={ item.title }
-                                subheader={ item.price }
-                                action={
-                                    <IconButton className="card-header-action" onClick={ () => {
-                                        window.open(item.link, "_blank")
-                                    } }>
-                                        <FindInPageIcon xlinkHref={ item.link }/>
-                                    </IconButton>
-                                }
-                    />
+        <div className={`flex flex-col bg-card border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 ${merchant ? 'border-amber-300 dark:border-amber-700' : 'border-border'}`}>
+            {/* Image */}
+            <div className="relative">
+                <ImageCarousel images={item.images} />
+                {merchant && (
+                    <span className="absolute top-2 left-2 z-10 bg-amber-500 text-white text-xs font-medium px-2 py-0.5 rounded-full leading-none">
+                        סוכנות
+                    </span>
+                )}
+                <button
+                    onClick={() => window.open(item.link, "_blank")}
+                    className="absolute top-2 right-2 z-10 bg-black/40 hover:bg-black/65 text-white rounded-full p-1.5 transition-colors"
+                    title="Open on Yad2"
+                >
+                    <FindInPageIcon style={{ fontSize: 15 }} />
+                </button>
+            </div>
+
+            {/* Content */}
+            <div className="flex flex-col flex-1 p-4 gap-1" dir="rtl">
+                <h3 className="font-semibold text-card-foreground text-sm leading-snug line-clamp-1">
+                    {item.title}
+                </h3>
+                {item.neighborhood && (
+                    <p className="text-muted-foreground text-xs line-clamp-1">{item.neighborhood}</p>
+                )}
+                {price && (
+                    <p className="text-card-foreground font-bold text-base mt-1">{price}</p>
+                )}
+
+                {/* Detail chips */}
+                <div className="flex gap-1.5 mt-2 flex-wrap">
+                    {item.rooms && (
+                        <span className="text-xs bg-secondary text-secondary-foreground px-2 py-0.5 rounded-md">
+                            🛏 {item.rooms} חד'
+                        </span>
+                    )}
+                    {item.meters && (
+                        <span className="text-xs bg-secondary text-secondary-foreground px-2 py-0.5 rounded-md">
+                            {item.meters} מ"ר
+                        </span>
+                    )}
+                    {item.floorNumber && (
+                        <span className="text-xs bg-secondary text-secondary-foreground px-2 py-0.5 rounded-md">
+                            קומה {item.floorNumber}
+                        </span>
+                    )}
                 </div>
-            </Tooltip>
-            <CardMedia>
-                <ImageCarousel images={ item.images }/>
-            </CardMedia>
+            </div>
 
-            <CardContent className="card-stack">
-                <Stack
-                    direction="row-reverse" spacing={ 2 }>
-                    <Item>
-                        { item.rooms }
-                    </Item>
-                    <Item>
-                        { item.meters }
-                    </Item>
-                    <Item>
-                        { item.floorNumber }
-                    </Item>
-                </Stack>
-            </CardContent>
-
-            <CardActionArea className="card-action-area" disableRipple={ true } high>
-                <CardActions disableSpacing>
-                    {renderActions()}
-                </CardActions>
-            </CardActionArea>
-        </Card>
+            {/* Actions */}
+            <div className="flex items-center justify-end gap-0.5 px-3 py-2 border-t border-border">
+                {renderActions()}
+            </div>
+        </div>
     );
-}
+};
 
 export default PropertyCard;

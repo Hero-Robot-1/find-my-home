@@ -1,19 +1,28 @@
 import * as React from 'react';
-import Grid from "@mui/material/Unstable_Grid2";
 import PropertyCard from "./PropertiesCard";
 
 const PropertiesGrid = ({ mode, data, onDeleteHandler }) => {
+    if (!data?.length) {
+        return (
+            <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
+                <p className="text-lg font-medium">No properties found</p>
+                <p className="text-sm mt-1">Try syncing or changing the filter</p>
+            </div>
+        );
+    }
+
     return (
-        <Grid container alignContent="center"
-              alignItems="center"
-              wrap="wrap" disableEqualOverflow={ "true" } padding={ 6 } spacing={ 7 } columns={ 9 }>
-            { data.map(item => (
-                <Grid className="properties-grid" key={ item.propertyId } { ...{ sm: 6, md: 3 } } minHeight={ 100 }>
-                    <PropertyCard item={ item } mode={ mode } onDeleteHandler={ onDeleteHandler }/>
-                </Grid>
-            )) }
-        </Grid>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-6">
+            {data.map(item => (
+                <PropertyCard
+                    key={item.propertyId}
+                    item={item}
+                    mode={mode}
+                    onDeleteHandler={onDeleteHandler}
+                />
+            ))}
+        </div>
     );
-}
+};
 
 export default PropertiesGrid;

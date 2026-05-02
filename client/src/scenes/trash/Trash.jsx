@@ -22,7 +22,13 @@ const TrashProperties = () => {
     }, [])
 
     return (
-        <PropertiesGrid data={ APIData } mode={ 'trash' } onDeleteHandler={ onDeleteHandler }></PropertiesGrid>
+        <div className="p-6">
+            <div className="mb-6">
+                <h1 className="text-2xl font-bold text-foreground">Trash</h1>
+                <p className="text-sm text-muted-foreground mt-0.5">{APIData.length > 0 ? `${APIData.length} listings` : 'Archived properties'}</p>
+            </div>
+            <PropertiesGrid data={APIData} mode="trash" onDeleteHandler={onDeleteHandler} />
+        </div>
     );
 }
 

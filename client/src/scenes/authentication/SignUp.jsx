@@ -5,7 +5,7 @@ import { serverUrl } from "../../index";
 
 const SignUp = () => {
     const { handleGoogle, loading, error } = useFetch(
-        serverUrl()
+        `${serverUrl()}/signup`
     );
 
     useEffect(() => {

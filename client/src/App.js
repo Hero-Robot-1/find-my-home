@@ -9,6 +9,7 @@ import TrashProperties from "./scenes/trash/Trash";
 import LikedProperties from "./scenes/liked/LikedProperties";
 import ReachOutProperties from "./scenes/reach-out/ReachOutProperties";
 import ExploreProperties from "./scenes/explore/ExploreProperties";
+import Login from "./scenes/authentication/Login";
 
 function App() {
     const [theme, colorMode] = useMode();
@@ -29,6 +30,10 @@ function App() {
             document.documentElement.classList.remove("dark");
         }
     }, [theme.palette.mode]);
+
+    if (!user?.email) {
+        return <Login />;
+    }
 
     return (
         <ColorModeContext.Provider value={colorMode}>

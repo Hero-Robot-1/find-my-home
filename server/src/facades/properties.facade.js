@@ -44,7 +44,13 @@ export const yad2ItemToProperty = (yad2Item) => {
 
 export const getYad2Page = async (bBox, pageNumber = 1) => {
     const url = `${BASE_URL}&bBox=${bBox}&zoom=12&page=${pageNumber}`;
-    return axios.get(url, { headers: { 'Content-Type': 'application/json; charset=utf-8' } })
+    return axios.get(url, { headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7',
+        'Referer': 'https://www.yad2.co.il/',
+    } })
         .then(response => {
             const properties = (response.data?.data?.markers || [])
                 .map(yad2ItemToProperty)

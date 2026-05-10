@@ -48,7 +48,16 @@ export const getYad2Page = async (bBox, pageNumber = 1) => {
     const agent = new HttpsProxyAgent(
         `http://${process.env.PROXY_USER}:${process.env.PROXY_PASS}@${process.env.PROXY_HOST}:${process.env.PROXY_PORT}`
     );
-    return axios.get(url, { httpsAgent: agent, proxy: false })
+    return axios.get(url, {
+        httpsAgent: agent,
+        proxy: false,
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+            'Accept': 'application/json, text/plain, */*',
+            'Accept-Language': 'he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7',
+            'Referer': 'https://www.yad2.co.il/',
+        },
+    })
         .then(response => {
             const properties = (response.data?.data?.markers || [])
                 .map(yad2ItemToProperty)

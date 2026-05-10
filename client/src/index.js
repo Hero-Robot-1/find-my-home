@@ -11,5 +11,5 @@ root.render(
     </HashRouter>
 );
 export const serverUrl = () => {
-    return process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : 'https://find-my-home-server.onrender.com'
+    return process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : process.env.REACT_APP_API_URL
 }

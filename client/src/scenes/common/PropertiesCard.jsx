@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import axios from "axios";
-import { serverUrl } from "../../index";
+import api from "../../api";
 import ImageCarousel from "./Carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -36,7 +35,7 @@ const PropertyCard = ({ mode, item, onDeleteHandler }) => {
 
     const patch = (fields, data) => {
         onDeleteHandler(id);
-        axios.patch(`${serverUrl()}/properties/${id}`, { fields, data });
+        api.patch(`/properties/${id}`, { fields, data });
     };
 
     const renderActions = () => {

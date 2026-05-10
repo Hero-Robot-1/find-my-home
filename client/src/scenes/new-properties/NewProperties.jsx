@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { useEffect, useState, useRef } from 'react';
 import PropertiesGrid from "../common/PropertiesGrid";
-import axios from "axios";
-import { serverUrl } from "../../index";
+import api from "../../api";
 import { neighborhoods } from "../../consts/neighborhoods";
 import SyncIcon from '@mui/icons-material/Sync';
 import TuneIcon from '@mui/icons-material/Tune';
@@ -65,7 +64,7 @@ const NewProperties = () => {
 
     const syncProperties = () => {
         setSyncing(true);
-        axios.post(`${serverUrl()}/properties/sync`)
+        api.post('/properties/sync')
             .then(() => {
                 setPage(1);
                 setRefreshKey(k => k + 1);
@@ -83,7 +82,7 @@ const NewProperties = () => {
         if (neighborhood) params.set('neighborhood', neighborhood);
         Object.entries(debouncedFilters).forEach(([k, v]) => { if (v !== '') params.set(k, v); });
 
-        axios.get(`${serverUrl()}/properties?${params}`, { signal: controller.signal })
+        api.get(`/properties?${params}`, { signal: controller.signal })
             .then((response) => {
                 const newItems = response.data.properties;
                 setAPIData(prev => page === 1 ? newItems : [...prev, ...newItems]);
@@ -91,7 +90,7 @@ const NewProperties = () => {
                 setHasMore(page * 30 < response.data.pagination.count);
             })
             .catch((err) => {
-                if (axios.isCancel(err)) return;
+                if (api.isCancel?.(err) || err?.code === 'ERR_CANCELED') return;
             })
             .finally(() => {
                 if (!controller.signal.aborted) {

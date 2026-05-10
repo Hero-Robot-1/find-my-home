@@ -1,8 +1,7 @@
 import * as React from 'react';
 import PropertiesGrid from "../common/PropertiesGrid";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { serverUrl } from "../../index";
+import api from "../../api";
 
 const query = { where: { archived: false, explore: true } }
 
@@ -15,7 +14,7 @@ const ExploreProperties = () => {
     };
 
     useEffect(() => {
-        axios.post(`${ serverUrl() }/properties/query`, {
+        api.post('/properties/query', {
             query
         }).then((response) => {
             setAPIData(response.data.properties);

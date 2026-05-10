@@ -19,8 +19,9 @@ export const listProperties = async (query) => {
         });
 };
 
-export const bulkCreateProperties = async (properties) => {
-    return Property.bulkCreate(properties, { returning: true, ignoreDuplicates: true })
+export const bulkCreateProperties = async (properties, userId) => {
+    const withUser = properties.map(p => ({ ...p, userId }));
+    return Property.bulkCreate(withUser, { returning: true, ignoreDuplicates: true })
         .then(data => {
             return {
                 properties: data
@@ -31,9 +32,9 @@ export const bulkCreateProperties = async (properties) => {
         });
 };
 
-export const updateProperty = async (id, dataToUpdate) => {
+export const updateProperty = async (id, userId, dataToUpdate) => {
     return Property.update(dataToUpdate, {
-        where: { propertyId: id },
+        where: { propertyId: id, userId },
     })
         .then(num => {
             if (num == 1) {
@@ -51,8 +52,8 @@ export const updateProperty = async (id, dataToUpdate) => {
         });
 };
 
-export const getLatestPropertyUpdatedDate = async () => {
-    return Property.max('propertyDateAdded', {})
+export const getLatestPropertyUpdatedDate = async (userId) => {
+    return Property.max('propertyDateAdded', { where: { userId } })
         .then(value => {
             return {
                 lastDateUpdated: value

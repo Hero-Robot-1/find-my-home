@@ -1,4 +1,4 @@
-import { ARRAY, DATE, Sequelize, TEXT, JSON, BOOLEAN } from 'sequelize';
+import { ARRAY, DATE, Sequelize, TEXT, JSON, BOOLEAN, INTEGER } from 'sequelize';
 import { STRING } from 'sequelize/lib/data-types';
 import dotenv from 'dotenv';
 
@@ -8,7 +8,10 @@ const Property = (sequelize) => {
     return sequelize.define("property", {
         propertyId: {
             type: STRING,
-            primaryKey: true
+        },
+        userId: {
+            type: INTEGER,
+            allowNull: false,
         },
         propertyDateAdded: {
             type: DATE
@@ -64,6 +67,8 @@ const Property = (sequelize) => {
         explore: {
             type: BOOLEAN
         }
+    }, {
+        indexes: [{ unique: true, fields: ['propertyId', 'userId'] }]
     })
 };
 
@@ -104,6 +109,10 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
 const dbConnector = {};
 
 dbConnector.sequelize = sequelize;
-dbConnector.properties = Property(sequelize)
-dbConnector.users = User(sequelize)
+dbConnector.properties = Property(sequelize);
+dbConnector.users = User(sequelize);
+
+dbConnector.users.hasMany(dbConnector.properties, { foreignKey: 'userId' });
+dbConnector.properties.belongsTo(dbConnector.users, { foreignKey: 'userId' });
+
 export const db = dbConnector;

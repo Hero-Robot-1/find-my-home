@@ -27,7 +27,7 @@ export const listProperties = async (req, res) => {
         merchant,
     } = req.query;
 
-    const baseWhere = { archived: false, liked: false, call: false, explore: false };
+    const baseWhere = { userId: req.userId, archived: false, liked: false, call: false, explore: false };
     if (neighborhood) baseWhere.neighborhood = neighborhood;
     if (merchant !== undefined && merchant !== '') baseWhere.merchant = merchant === 'true';
 
@@ -61,6 +61,7 @@ export const listProperties = async (req, res) => {
 
 export const queryProperties = async (req, res) => {
     const query = req.body.query;
+    query.where = { ...query.where, userId: req.userId };
     const response = await dao.listProperties(query);
     res.send(response);
 };
@@ -73,17 +74,17 @@ export const updateProperty = async (req, res) => {
     const dataToUpdate = fields.reduce((acc, field) => {
         return { ...acc, [field]: data[field] };
     }, {});
-    const message = await dao.updateProperty(id, dataToUpdate);
+    const message = await dao.updateProperty(id, req.userId, dataToUpdate);
     res.send(message);
 };
 
 export const initProperties = async (req, res) => {
     const { properties } = await getYad2AllProperties();
-    await dao.bulkCreateProperties(properties);
+    await dao.bulkCreateProperties(properties, req.userId);
     res.send({ message: `${properties.length} properties synced.` });
 };
 
 export const syncProperties = async (req, res) => {
-    const { properties } = await getLatestProperties();
+    const { properties } = await getLatestProperties(req.userId);
     res.send({ properties });
 };

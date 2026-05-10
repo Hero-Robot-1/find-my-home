@@ -11,6 +11,7 @@ jest.mock('../src/jobs/yad2.job.js', () => ({ initScheduledJobs: jest.fn(), getL
 jest.mock('../src/queues/properies.queues.js', () => ({ producePagesToQueue: jest.fn() }));
 jest.mock('../src/facades/properties.facade.js', () => ({ getYad2Page: jest.fn() }));
 jest.mock('../src/authentication/authentication.client.js', () => ({ verifyGoogleToken: jest.fn() }));
+jest.mock('jsonwebtoken', () => ({ sign: jest.fn().mockReturnValue('mock-token') }));
 
 import app from '../app.js';
 import { db } from '../src/models/index.js';
@@ -42,6 +43,7 @@ describe('POST /login', () => {
         const res = await request(app).post('/login').send({ credential: 'valid-token' });
         expect(res.status).toBe(200);
         expect(res.body.user).toEqual(user);
+        expect(res.body.token).toBe('mock-token');
         expect(db.users.findOrCreate).toHaveBeenCalledWith(
             expect.objectContaining({ where: { email: 'john@example.com' } })
         );
@@ -57,5 +59,6 @@ describe('POST /login', () => {
         const res = await request(app).post('/login').send({ credential: 'valid-token' });
         expect(res.status).toBe(200);
         expect(res.body.user).toEqual(user);
+        expect(res.body.token).toBe('mock-token');
     });
 });

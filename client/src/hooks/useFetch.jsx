@@ -16,6 +16,7 @@ const useFetch = (url) => {
             const data = await res.json();
             if (data?.user) {
                 localStorage.setItem("user", JSON.stringify(data.user));
+                localStorage.setItem("token", data.token);
                 window.location.href = "/";
             } else {
                 setError(data?.message || "Login failed. Please try again.");

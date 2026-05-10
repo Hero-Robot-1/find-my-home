@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 import { db } from '../models/index.js';
 import { verifyGoogleToken } from "../authentication/authentication.client.js";
 
@@ -26,7 +27,8 @@ export const login = async (req, res) => {
             }
         });
 
-        res.send({ user });
+        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '30d' });
+        res.send({ user, token });
     } catch (error) {
         res.status(500).json({ message: error?.message || "Login failed" });
     }

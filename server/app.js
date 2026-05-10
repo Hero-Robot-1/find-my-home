@@ -1,15 +1,10 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import cors from 'cors';
 import { routes } from './src/routes/properties.routes.js';
 import { authRoutes } from './src/routes/authentication.routes.js';
 
 const app = express();
 
-app.use(cors({
-    origin: '*',
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
-}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

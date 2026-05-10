@@ -43,9 +43,6 @@ jobs:
       - name: Deploy to S3
         run: aws s3 sync client/build/ s3://${{ secrets.S3_BUCKET }} --delete
 
-      - name: Invalidate CloudFront cache
-        if: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID != '' }}
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
 
   deploy-backend:
     name: Deploy Backend to EC2

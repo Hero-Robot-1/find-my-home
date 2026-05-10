@@ -6,7 +6,10 @@ import { authRoutes } from './src/routes/authentication.routes.js';
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

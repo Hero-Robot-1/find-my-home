@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { serverUrl } from "../../index";
 
+const query = { where: { archived: true } }
+
 const TrashProperties = () => {
     const [APIData, setAPIData] = useState([]);
 
@@ -12,7 +14,6 @@ const TrashProperties = () => {
         await setAPIData(newData)
     };
 
-    const query = { where: { archived: true } }
     useEffect(() => {
         axios.post(`${ serverUrl() }/properties/query`, {
             query

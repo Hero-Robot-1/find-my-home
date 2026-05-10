@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { serverUrl } from "../../index";
 
+const query = { where: { archived: false, explore: true } }
+
 const ExploreProperties = () => {
     const [APIData, setAPIData] = useState(
         []);
@@ -12,7 +14,6 @@ const ExploreProperties = () => {
         await setAPIData(newData)
     };
 
-    const query = { where: { archived: false, explore: true } }
     useEffect(() => {
         axios.post(`${ serverUrl() }/properties/query`, {
             query

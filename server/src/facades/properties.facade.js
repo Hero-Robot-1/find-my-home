@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://yad2-proxy.amitleshem.workers.dev' +
+const BASE_URL = 'https://gw.yad2.co.il/realestate-feed/forsale/map' +
     '?city=5000&area=1&region=3&maxPrice=6000000&minRooms=3&maxRooms=5&parking=1';
 
 // 4×4 grid covering all of Tel Aviv (16 parallel queries)
@@ -44,7 +44,14 @@ export const yad2ItemToProperty = (yad2Item) => {
 
 export const getYad2Page = async (bBox, pageNumber = 1) => {
     const url = `${BASE_URL}&bBox=${bBox}&zoom=12&page=${pageNumber}`;
-    return axios.get(url)
+    return axios.get(url, {
+        proxy: {
+            host: process.env.PROXY_HOST,
+            port: parseInt(process.env.PROXY_PORT),
+            auth: { username: process.env.PROXY_USER, password: process.env.PROXY_PASS },
+            protocol: 'http',
+        }
+    })
         .then(response => {
             const properties = (response.data?.data?.markers || [])
                 .map(yad2ItemToProperty)

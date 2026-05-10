@@ -6,33 +6,28 @@ const useFetch = (url) => {
 
     const handleGoogle = async (response) => {
         setLoading(true);
-        fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-
-            body: JSON.stringify({ credential: response.credential }),
-        })
-            .then((res) => {
-                setLoading(false);
-
-                return res.json();
-            })
-            .then((data) => {
-                if (data?.user) {
-                    localStorage.setItem("user", JSON.stringify(data?.user));
-                    window.location.reload();
-                }
-
-                throw new Error(data?.message || data);
-            })
-            .catch((error) => {
-                setError(error?.message);
+        setError("");
+        try {
+            const res = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ credential: response.credential }),
             });
+            const data = await res.json();
+            if (data?.user) {
+                localStorage.setItem("user", JSON.stringify(data.user));
+                window.location.reload();
+            } else {
+                setError(data?.message || "Login failed. Please try again.");
+            }
+        } catch (err) {
+            setError("Network error. Please try again.");
+        } finally {
+            setLoading(false);
+        }
     };
+
     return { loading, error, handleGoogle };
 };
-
 
 export default useFetch;

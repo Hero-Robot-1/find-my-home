@@ -59,6 +59,8 @@ export const getYad2Page = async (bBox, pageNumber = 1) => {
         },
     })
         .then(response => {
+            const raw = JSON.stringify(response.data).slice(0, 200);
+            console.log(`Yad2 response sample: ${raw}`);
             const properties = (response.data?.data?.markers || [])
                 .map(yad2ItemToProperty)
                 .filter(item => !!item.propertyId)
